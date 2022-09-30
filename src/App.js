@@ -8,6 +8,7 @@ import DefaultLayout from "./layout/DefaultLayout";
 
 function App() {
   const [size, setSize] = useState("");
+  const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [cartItems, setCartItems] = useState(() => {
     const cartFromLocalStore = JSON.parse(localStorage.getItem("cart"));
@@ -65,7 +66,15 @@ function App() {
     // Get API
     fetch("https://6336bb585327df4c43c83309.mockapi.io/api/v1/thucuongngonvai")
       .then((res) => res.json())
-      .then((items) => setItems(items[0]));
+      .then((items) => {
+        setItems(items[0].drinks);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
 
     // Tạo Cart trong localStore để lưu Item
     localStorage.setItem("cart", JSON.stringify(cartItems));
@@ -74,6 +83,7 @@ function App() {
   return (
     <>
       <DefaultLayout
+        loading={loading}
         items={items}
         size={size}
         cartItems={cartItems}

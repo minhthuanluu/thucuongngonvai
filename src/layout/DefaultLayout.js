@@ -11,6 +11,7 @@ import style from "./DefaultLayout.module.scss";
 const cx = classnames.bind(style);
 
 function DefaultLayout({
+  loading,
   size,
   items,
   cartItems,
@@ -23,7 +24,7 @@ function DefaultLayout({
     <div className={cx("page-over")}>
       <Header></Header>
       <SimpleSlider></SimpleSlider>
-      <Home items={items} handleAdd={handleAdd}></Home>
+      <Home loading={loading} items={items} handleAdd={handleAdd}></Home>
       <Footer
         size={size}
         cartItems={cartItems}

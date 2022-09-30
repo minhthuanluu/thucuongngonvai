@@ -1,10 +1,11 @@
 import React from "react";
 import { AlertAddCart } from "../ToastAlert";
 
-function Product({ items, handleAdd }) {
+function Product({ loading, items, handleAdd }) {
   return (
     <>
-      {items.drinks.map((item) => (
+      {loading && <div>A moment please...</div>}
+      {items.map((item) => (
         <div className="product-card" key={item.id}>
           <div className="tags">
             {item.discount > 0 ? (
@@ -20,9 +21,13 @@ function Product({ items, handleAdd }) {
           <div className="product-card-content">
             <div className="product-title">{item.name}</div>
             <div className="product-price">
-              <div className="product-origin-price">{item.price}đ</div>
+              <div className="product-origin-price">
+                {item.price.toLocaleString()}đ
+              </div>
               {item.sale !== "0" ? (
-                <div className="product-sale-price">{item.sale}đ</div>
+                <div className="product-sale-price">
+                  {item.sale.toLocaleString()}đ
+                </div>
               ) : (
                 ""
               )}

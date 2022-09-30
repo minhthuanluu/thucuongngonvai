@@ -1,7 +1,7 @@
 import React from "react";
 import Product from "../../component/Product";
 
-function Home({ items, handleAdd }) {
+function Home({ loading, items, handleAdd }) {
   return (
     <>
       <main className="home">
@@ -12,7 +12,11 @@ function Home({ items, handleAdd }) {
           </div>
           <div className="section-content container">
             <div className="list-product">
-              <Product items={items} handleAdd={handleAdd}></Product>
+              <Product
+                loading={loading}
+                items={items}
+                handleAdd={handleAdd}
+              ></Product>
             </div>
           </div>
         </div>

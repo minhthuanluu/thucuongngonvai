@@ -112,7 +112,7 @@ function ModalPopUp({
                       </dd>
 
                       <dd className={cx("content-flex-price")}>
-                        {totalPrice.toLocaleString()}đ
+                        {item.price.toLocaleString()}đ
                       </dd>
                       <dd className={cx("content-flex-del")}>
                         <button onClick={() => handleClear(item.id)}>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./ModalPopUp.module.scss";
 import { AlertCheckOut } from "../ToastAlert";
@@ -15,6 +15,31 @@ function ModalPopUp({
 }) {
   const totalPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
   const ref = useRef();
+  // const arr = ["M", "L", "XL"];
+  // const [total, setTotal] = useState(totalPrice);
+
+  // const renderSwitch = (param) => {
+  //   switch (param) {
+  //     case "M":
+  //       return setTotal(totalPrice);
+  //     case "L":
+  //       return setTotal(totalPrice + 1);
+  //     case "XL":
+  //       return setTotal(totalPrice + 2);
+  //     default:
+  //       break;
+  //   }
+  // };
+
+  // const onChangeSize = (e, id) => {
+  //   cartItems.map((item) => {
+  //     if (item.id === id) {
+  //       console.log(item.id);
+  //       handleChange(e.target.value, id);
+  //       renderSwitch(e.target.value);
+  //     }
+  //   });
+  // };
 
   const [user, setUser] = useState("");
   const [users, setUsers] = useState(() => {
@@ -70,9 +95,7 @@ function ModalPopUp({
                       <dd className={cx("content-flex-option")}>
                         <select
                           value={size}
-                          onChange={(e) =>
-                            handleChange(e.target.value, item.id)
-                          }
+                          onChange={(e) => handleChange(e.target.value, id)}
                         >
                           <option value="M">M</option>
                           <option value="L">L</option>
@@ -87,7 +110,7 @@ function ModalPopUp({
                       </dd>
 
                       <dd className={cx("content-flex-price")}>
-                        {item.price.toLocaleString()}đ
+                        {totalPrice.toLocaleString()}đ
                       </dd>
                       <dd className={cx("content-flex-del")}>
                         <button onClick={() => handleClear(item.id)}>

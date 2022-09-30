@@ -8,6 +8,7 @@ import DefaultLayout from "./layout/DefaultLayout";
 
 function App() {
   const [size, setSize] = useState("");
+  const [sizeAPI, setSizeAPI] = useState([]);
   const [items, setItems] = useState([]);
   const [cartItems, setCartItems] = useState(() => {
     const cartFromLocalStore = JSON.parse(localStorage.getItem("cart"));
@@ -45,7 +46,6 @@ function App() {
   // Thay đổi giá trị trong select option
   const handleChange = (e, product_id) => {
     let cart = JSON.parse(localStorage.getItem("cart"));
-
     cart.map((item) => {
       if (item.id === product_id) {
         return (item.size = e);
@@ -64,7 +64,7 @@ function App() {
 
   useEffect(() => {
     // Get API
-    fetch("http://localhost:3000/drinks")
+    fetch("https://6336bb585327df4c43c83309.mockapi.io/api/v1/")
       .then((res) => res.json())
       .then((items) => setItems(items));
 

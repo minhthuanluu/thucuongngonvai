@@ -95,7 +95,9 @@ function ModalPopUp({
                       <dd className={cx("content-flex-option")}>
                         <select
                           value={size}
-                          onChange={(e) => handleChange(e.target.value, id)}
+                          onChange={(e) =>
+                            handleChange(e.target.value, item.id)
+                          }
                         >
                           <option value="M">M</option>
                           <option value="L">L</option>

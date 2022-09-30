@@ -64,7 +64,7 @@ function App() {
 
   useEffect(() => {
     // Get API
-    fetch("https://6336bb585327df4c43c83309.mockapi.io/api/v1/")
+    fetch("https://6336bb585327df4c43c83309.mockapi.io/api/v1/thucuongngonvai")
       .then((res) => res.json())
       .then((items) => setItems(items));
 

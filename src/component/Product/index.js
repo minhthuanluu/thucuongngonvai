@@ -33,7 +33,6 @@ function Product({ items, handleAdd }) {
           </div>
         </div>
       ))}
-      7
     </>
   );
 }

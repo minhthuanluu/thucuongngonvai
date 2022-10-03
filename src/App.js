@@ -8,23 +8,53 @@ import DefaultLayout from "./layout/DefaultLayout";
 
 function App() {
   const [size, setSize] = useState("");
+  const [sizes, setSizes] = useState("");
   const [loading, setLoading] = useState(true);
+  const [prices, setPrices] = useState(0);
+  const [qtys, setQtys] = useState(0);
+  const [mounts, setMounts] = useState(0);
   const [items, setItems] = useState([]);
   const [cartItems, setCartItems] = useState(() => {
     const cartFromLocalStore = JSON.parse(localStorage.getItem("cart"));
     return cartFromLocalStore ?? [];
   });
 
+  const handleTotalPrice = (value) => {
+    let totalPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
+    setSize(value);
+  };
+
   // Tăng số lượng Item
-  const handleAdd = (product_id) => {
-    const exist = cartItems.find((x) => x.id === product_id.id);
+  const handleAdd = (product) => {
+    let tempPrice = 0;
+    let tempAmount = 0;
+
+    const { price, qty, size } = product;
+    // console.log(product);
+    // console.log(product.qty);
+    // setMounts(price * qty);
+    // tempPrice = price * qty;
+    // tempAmount += tempPrice;
+    // console.log(tempAmount);
+    const exist = cartItems.find((x) => x.id === product.id);
+    const getBySize = cartItems.filter((x) => x.size === sizes);
+    setPrices(price);
+    setQtys(qty);
+    // console.log(sizes);
+    // console.log(cartItems.filter((x) => console.log(x)));
     if (exist) {
       const newCartItems = cartItems.map((x) =>
-        x.id === product_id.id ? { ...exist, qty: exist.qty + 1 } : x
+        x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x
       );
-      setCartItems(newCartItems);
+      tempAmount += qty * price;
+      setMounts(mounts + tempAmount);
+
+      if (sizes) {
+        console.log(sizes * price);
+      }
+      // setCartItems(newCartItems);
     } else {
-      const newCartItems = [...cartItems, { ...product_id, qty: 1 }];
+      const newCartItems = [...cartItems, { ...product, qty: 1 }];
       setCartItems(newCartItems);
     }
   };
@@ -48,6 +78,11 @@ function App() {
     let cart = JSON.parse(localStorage.getItem("cart"));
     cart.map((item) => {
       if (item.id === product_id) {
+        setSize(e);
+        setSizes(e);
+
+        // console.log("qtys...", qtys);
+        // console.log("sizeprice...", item.price);
         return (item.size = e);
       }
     });

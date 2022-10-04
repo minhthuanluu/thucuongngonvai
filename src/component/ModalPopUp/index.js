@@ -3,6 +3,11 @@ import classNames from "classnames/bind";
 import styles from "./ModalPopUp.module.scss";
 import { AlertCheckOut } from "../ToastAlert";
 
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+
 const cx = classNames.bind(styles);
 
 function ModalPopUp({
@@ -14,32 +19,11 @@ function ModalPopUp({
   handleClear,
 }) {
   const totalPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
+
+  const { sizeprice } = cartItems;
+  console.log(sizeprice);
+
   const ref = useRef();
-  // const arr = ["M", "L", "XL"];
-  // const [total, setTotal] = useState(totalPrice);
-
-  // const renderSwitch = (param) => {
-  //   switch (param) {
-  //     case "M":
-  //       return setTotal(totalPrice);
-  //     case "L":
-  //       return setTotal(totalPrice + 1);
-  //     case "XL":
-  //       return setTotal(totalPrice + 2);
-  //     default:
-  //       break;
-  //   }
-  // };
-
-  // const onChangeSize = (e, id) => {
-  //   cartItems.map((item) => {
-  //     if (item.id === id) {
-  //       console.log(item.id);
-  //       handleChange(e.target.value, id);
-  //       renderSwitch(e.target.value);
-  //     }
-  //   });
-  // };
 
   const [user, setUser] = useState("");
   const [users, setUsers] = useState(() => {
@@ -57,6 +41,19 @@ function ModalPopUp({
     setUser("");
     ref.current.focus();
   };
+
+  // const [sizes, setSizes] = useState("");
+  // const [memori, setMemori] = useState("");
+
+  // const handleChange = (e, product_id) => {
+  //   let cart = JSON.parse(localStorage.getItem("cart"));
+
+  //   cart.map((item) => {
+  //     if (item.id === product_id) {
+  //       return (item.size = e);
+  //     }
+  //   });
+  // };
 
   return (
     <>
@@ -95,13 +92,32 @@ function ModalPopUp({
                       <dd className={cx("content-flex-option")}>
                         <select
                           value={size}
+                          id={item.id}
                           onChange={(e) =>
                             handleChange(e.target.value, item.id)
                           }
                         >
-                          <option value="M">M</option>
+                          {/* <option value="M">M</option>
                           <option value="L">L</option>
-                          <option value="XL">XL</option>
+                          <option value="XL">XL</option> */}
+                          {item.size.map((s) => (
+                            <option key={s.id} value={s.sizename}>
+                              {s.sizename}
+                            </option>
+                          ))}
+                        </select>
+                      </dd>
+
+                      <dd className={cx("content-flex-price")}>
+                        <select value={size} id={item.id}>
+                          {/* <option value="M">{item.size[0].sizeprice}đ</option>
+                          <option value="L">{item.size[1].sizeprice}đ</option>
+                          <option value="XL">{item.size[2].sizeprice}đ</option> */}
+                          {item.size.map((s) => (
+                            <option key={s.id} value={s.sizename}>
+                              {s.sizeprice}đ
+                            </option>
+                          ))}
                         </select>
                       </dd>
 
@@ -111,9 +127,6 @@ function ModalPopUp({
                         <button onClick={() => handleRemove(item)}>-</button>
                       </dd>
 
-                      <dd className={cx("content-flex-price")}>
-                        {item.price.toLocaleString()}đ
-                      </dd>
                       <dd className={cx("content-flex-del")}>
                         <button onClick={() => handleClear(item.id)}>
                           Xóa

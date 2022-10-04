@@ -30,7 +30,10 @@ function App() {
     let tempAmount = 0;
 
     const { price, qty, size } = product;
-    // console.log(product);
+    // size.map((s) => {
+    //   <div key={s.id}>{console.log(s.sizename)}</div>;
+    // });
+
     // console.log(product.qty);
     // setMounts(price * qty);
     // tempPrice = price * qty;
@@ -49,9 +52,9 @@ function App() {
       tempAmount += qty * price;
       setMounts(mounts + tempAmount);
 
-      if (sizes) {
-        console.log(sizes * price);
-      }
+      // if (sizes) {
+      //   console.log(sizes * price);
+      // }
       // setCartItems(newCartItems);
     } else {
       const newCartItems = [...cartItems, { ...product, qty: 1 }];
@@ -78,16 +81,12 @@ function App() {
     let cart = JSON.parse(localStorage.getItem("cart"));
     cart.map((item) => {
       if (item.id === product_id) {
-        setSize(e);
-        setSizes(e);
-
-        // console.log("qtys...", qtys);
-        // console.log("sizeprice...", item.price);
-        return (item.size = e);
+        console.log(item);
+        return setSize((item.size = e));
       }
     });
 
-    setSize(localStorage.setItem("cart", JSON.stringify(cart)));
+    // setSize(localStorage.setItem("cart", JSON.stringify(cart)));
   };
 
   // Xóa từng Item trong Cart
@@ -98,6 +97,8 @@ function App() {
   };
 
   useEffect(() => {
+    // fake API
+    const restAPI = "https://633c0cde74afaef164009261.mockapi.io/dsprdc";
     // Get API
     fetch("https://6336bb585327df4c43c83309.mockapi.io/api/v1/thucuongngonvai")
       .then((res) => res.json())

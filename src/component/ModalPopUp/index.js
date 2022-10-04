@@ -17,6 +17,7 @@ function ModalPopUp({
   handleRemove,
   handleChange,
   handleClear,
+  qtys
 }) {
   const totalPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
 
@@ -78,8 +79,8 @@ function ModalPopUp({
                     <dt>Hình ảnh</dt>
                     <dt>Sản phẩm</dt>
                     <dt>Chọn size</dt>
-                    <dt>Số lượng</dt>
                     <dt>Giá tiền</dt>
+                    <dt>Số lượng</dt>
                     <dt>Xóa</dt>
                   </dl>
 
@@ -123,7 +124,7 @@ function ModalPopUp({
 
                       <dd className={cx("content-flex-qty")}>
                         <button onClick={() => handleAdd(item)}>+</button>
-                        {item.qty}
+                        {qtys ?? item.qty}
                         <button onClick={() => handleRemove(item)}>-</button>
                       </dd>
 

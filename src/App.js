@@ -26,62 +26,38 @@ function App() {
 
   // Tăng số lượng Item
   const handleAdd = (product) => {
-    let tempPrice = 0;
-    let tempAmount = 0;
-
-    const { price, qty, size } = product;
-    // size.map((s) => {
-    //   <div key={s.id}>{console.log(s.sizename)}</div>;
-    // });
-
-    // console.log(product.qty);
-    // setMounts(price * qty);
-    // tempPrice = price * qty;
-    // tempAmount += tempPrice;
-    // console.log(tempAmount);
-    const exist = cartItems.find((x) => x.id === product.id);
-    const getBySize = cartItems.filter((x) => x.size === sizes);
-    setPrices(price);
-    setQtys(qty);
-    // console.log(sizes);
-    // console.log(cartItems.filter((x) => console.log(x)));
-    if (exist) {
-      const newCartItems = cartItems.map((x) =>
-        x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x
-      );
-      tempAmount += qty * price;
-      setMounts(mounts + tempAmount);
-
-      // if (sizes) {
-      //   console.log(sizes * price);
-      // }
-      // setCartItems(newCartItems);
+    if (cartItems.length > 0) {
+      const exist = cartItems.findIndex((x) => x.id === product.id);
+      let val = cartItems[exist].qty;
+      cartItems[exist].qty = val + 1;
+      setCartItems(cartItems)
+      setQtys(cartItems[exist].qty);
     } else {
-      const newCartItems = [...cartItems, { ...product, qty: 1 }];
-      setCartItems(newCartItems);
+
     }
   };
 
   // Giảm số lượng Item
-  const handleRemove = (product_id) => {
-    const exist = cartItems.find((x) => x.id === product_id.id);
-    if (exist.qty === 1) {
-      const newCartItems = cartItems.filter((x) => x.id !== product_id.id);
-      setCartItems(newCartItems);
-    } else {
-      const newCartItems = cartItems.map((x) =>
-        x.id === product_id.id ? { ...exist, qty: exist.qty - 1 } : x
-      );
-      setCartItems(newCartItems);
+  const handleRemove = (product) => {
+    if (cartItems.length > 0) {
+      const exist = cartItems.findIndex((x) => x.id === product.id);
+      let val = cartItems[exist].qty;
+      cartItems[exist].qty = val - 1;
+      setCartItems(cartItems);
+      setQtys(cartItems[exist].qty);
+    }
+    else {
+      
     }
   };
 
-  // Thay đổi giá trị trong select option
+  // Thay đổi giá trị trong Size select option
   const handleChange = (e, product_id) => {
     let cart = JSON.parse(localStorage.getItem("cart"));
+    const exist = cartItems.findIndex((x) => x.id === product_id);
     cart.map((item) => {
       if (item.id === product_id) {
-        console.log(item);
+        cartItems[exist].qty = e;
         return setSize((item.size = e));
       }
     });
@@ -114,7 +90,7 @@ function App() {
 
     // Tạo Cart trong localStore để lưu Item
     localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]); // cartItems -> Sau mỗi lần thêm Item thì cập nhập lại initialStateValue
+  }, [localStorage]); // cartItems -> Sau mỗi lần thêm Item thì cập nhập lại initialStateValue
 
   return (
     <>
@@ -122,6 +98,7 @@ function App() {
         loading={loading}
         items={items}
         size={size}
+        qty={qtys}
         cartItems={cartItems}
         handleAdd={handleAdd}
         handleRemove={handleRemove}

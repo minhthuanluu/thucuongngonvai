@@ -14,6 +14,7 @@ function Footer({
   handleRemove,
   handleChange,
   handleClear,
+  countItemsCart
 }) {
   const [show, setShow] = useState(false);
 
@@ -47,6 +48,7 @@ function Footer({
               handleRemove={handleRemove}
               handleChange={handleChange}
               handleClear={handleClear}
+              countItemsCart={countItemsCart}
             ></ModalPopUp>
           </Popup>
         </div>

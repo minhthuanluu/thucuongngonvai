@@ -12,12 +12,13 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [prices, setPrices] = useState(0);
   const [qtys, setQtys] = useState(0);
-  const [mounts, setMounts] = useState(0);
+  const [countItemsCart, setCountItemsCart] = useState(0);
   const [items, setItems] = useState([]);
   const [cartItems, setCartItems] = useState(() => {
     const cartFromLocalStore = JSON.parse(localStorage.getItem("cart"));
     return cartFromLocalStore ?? [];
   });
+  const [reload,setReload] = useState(false)
 
   const handleTotalPrice = (value) => {
     let totalPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
@@ -26,29 +27,13 @@ function App() {
 
   // Tăng số lượng Item
   const handleAdd = (product) => {
-    if (cartItems.length > 0) {
-      const exist = cartItems.findIndex((x) => x.id === product.id);
-      let val = cartItems[exist].qty;
-      cartItems[exist].qty = val + 1;
-      setCartItems(cartItems)
-      setQtys(cartItems[exist].qty);
-    } else {
-
-    }
+    cartItems.push(product)
+    setReload(!reload)
   };
 
   // Giảm số lượng Item
   const handleRemove = (product) => {
-    if (cartItems.length > 0) {
-      const exist = cartItems.findIndex((x) => x.id === product.id);
-      let val = cartItems[exist].qty;
-      cartItems[exist].qty = val - 1;
-      setCartItems(cartItems);
-      setQtys(cartItems[exist].qty);
-    }
-    else {
-      
-    }
+    
   };
 
   // Thay đổi giá trị trong Size select option
@@ -90,7 +75,15 @@ function App() {
 
     // Tạo Cart trong localStore để lưu Item
     localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [localStorage]); // cartItems -> Sau mỗi lần thêm Item thì cập nhập lại initialStateValue
+    processCartItems();
+  }, [localStorage,reload]); // cartItems -> Sau mỗi lần thêm Item thì cập nhập lại initialStateValue
+
+  const processCartItems = () => {
+    let tempCartItem = cartItems;
+    const counts = {};
+    tempCartItem.forEach(function (x) { counts[x.id] = (counts[x.id] || 0) + 1; });
+    setCountItemsCart(counts)
+  }
 
   return (
     <>
@@ -100,6 +93,7 @@ function App() {
         size={size}
         qty={qtys}
         cartItems={cartItems}
+        countItemsCart={countItemsCart}
         handleAdd={handleAdd}
         handleRemove={handleRemove}
         handleChange={handleChange}

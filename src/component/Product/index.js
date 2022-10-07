@@ -13,10 +13,10 @@ function Product({ loading, items, handleAdd }) {
             ) : (
               ""
             )}
-            {item.newitem ? <div className="new-tag">new</div> : ""}
+            {/* {item.newitem ? <div className="new-tag">new</div> : ""} */}
           </div>
           <div className="img-wrap">
-            <img src={item.imageurl} alt="" />
+            <img src={item.gallery.extension} alt="" />
           </div>
           <div className="product-card-content">
             <div className="product-title">{item.name}</div>

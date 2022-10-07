@@ -14,6 +14,7 @@ function Footer({
   handleRemove,
   handleChange,
   handleClear,
+  countItemsCart,
 }) {
   const [show, setShow] = useState(false);
 
@@ -47,12 +48,13 @@ function Footer({
               handleRemove={handleRemove}
               handleChange={handleChange}
               handleClear={handleClear}
+              countItemsCart={countItemsCart}
             ></ModalPopUp>
           </Popup>
         </div>
 
         <div style={{ textAlign: "center" }}>
-          COPYRIGHTⒸ Tra Sua Su All Rights Reserved.
+          COPYRIGHTⒸ The Gioi Tra Sua All Rights Reserved.
         </div>
       </footer>
     </>

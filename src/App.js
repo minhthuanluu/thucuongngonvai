@@ -8,56 +8,35 @@ import DefaultLayout from "./layout/DefaultLayout";
 
 function App() {
   const [size, setSize] = useState("");
-  const [sizes, setSizes] = useState("");
   const [loading, setLoading] = useState(true);
   const [prices, setPrices] = useState(0);
   const [qtys, setQtys] = useState(0);
-  const [mounts, setMounts] = useState(0);
+  const [countItemsCart, setCountItemsCart] = useState(0);
   const [items, setItems] = useState([]);
   const [cartItems, setCartItems] = useState(() => {
     const cartFromLocalStore = JSON.parse(localStorage.getItem("cart"));
     return cartFromLocalStore ?? [];
   });
+  const [reload, setReload] = useState(false);
 
-  const handleTotalPrice = (value) => {
-    let totalPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
-    setSize(value);
-  };
+  // const handleTotalPrice = (value) => {
+  //   let totalPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
+  //   setSize(value);
+  // };
 
   // Tăng số lượng Item
-  const handleAdd = (product) => {
-    let tempPrice = 0;
-    let tempAmount = 0;
+  const handleAdd = (product_id) => {
+    // cartItems.push(product);
+    // setReload(!reload);
 
-    const { price, qty, size } = product;
-    // size.map((s) => {
-    //   <div key={s.id}>{console.log(s.sizename)}</div>;
-    // });
-
-    // console.log(product.qty);
-    // setMounts(price * qty);
-    // tempPrice = price * qty;
-    // tempAmount += tempPrice;
-    // console.log(tempAmount);
-    const exist = cartItems.find((x) => x.id === product.id);
-    const getBySize = cartItems.filter((x) => x.size === sizes);
-    setPrices(price);
-    setQtys(qty);
-    // console.log(sizes);
-    // console.log(cartItems.filter((x) => console.log(x)));
+    const exist = cartItems.find((x) => x.id === product_id.id);
     if (exist) {
       const newCartItems = cartItems.map((x) =>
-        x.id === product.id ? { ...exist, qty: exist.qty + 1 } : x
+        x.id === product_id.id ? { ...exist, qty: exist.qty + 1 } : x
       );
-      tempAmount += qty * price;
-      setMounts(mounts + tempAmount);
-
-      // if (sizes) {
-      //   console.log(sizes * price);
-      // }
-      // setCartItems(newCartItems);
+      setCartItems(newCartItems);
     } else {
-      const newCartItems = [...cartItems, { ...product, qty: 1 }];
+      const newCartItems = [...cartItems, { ...product_id, qty: 1 }];
       setCartItems(newCartItems);
     }
   };
@@ -76,34 +55,57 @@ function App() {
     }
   };
 
-  // Thay đổi giá trị trong select option
+  // Thay đổi giá trị trong Size select option
   const handleChange = (e, product_id) => {
+    // console.log("product_id", product_id);
+    // console.log("e", e);
+
     let cart = JSON.parse(localStorage.getItem("cart"));
+
     cart.map((item) => {
       if (item.id === product_id) {
-        console.log(item);
-        return setSize((item.size = e));
+        return (item.size = e);
       }
     });
+    setSize(localStorage.setItem("cart", JSON.stringify(cart)));
+
+    // setSize(localStorage.setItem("cart", JSON.stringify(cart)));
+    // let cart = JSON.parse(localStorage.getItem("cart"));
+    // const exist = cartItems.findIndex((x) => x.id === product_id);
+
+    // const a = cart.filter((item) => item.id === product_id);
+    // console.log("a", a);
+
+    // setSize(e);
+
+    // console.log("n", n);
+    // cart.map((item) => {
+    //   if (item.id === product_id) {
+    //     // cartItems[exist].qty = e;
+    //     // console.log(item.id);
+    //     item.product_class.forEach((i) => {
+    //       // console.log(i);
+    //       if (i.class.name === e) {
+    //         return i.class.name === e;
+    //       }
+    //     });
+    //   }
+    // });
 
     // setSize(localStorage.setItem("cart", JSON.stringify(cart)));
   };
 
   // Xóa từng Item trong Cart
   const handleClear = (product_id) => {
-    let cart = JSON.parse(localStorage.getItem("cart"));
-    cart = cart.filter((item) => item.id !== product_id);
-    setCartItems(cart);
+    setCartItems(cartItems.filter((item) => item.id !== product_id));
   };
 
   useEffect(() => {
-    // fake API
-    const restAPI = "https://633c0cde74afaef164009261.mockapi.io/dsprdc";
     // Get API
     fetch("https://6336bb585327df4c43c83309.mockapi.io/api/v1/thucuongngonvai")
       .then((res) => res.json())
       .then((items) => {
-        setItems(items[0].drinks);
+        setItems(items[0].products);
       })
       .catch((err) => {
         console.log(err.message);
@@ -114,7 +116,17 @@ function App() {
 
     // Tạo Cart trong localStore để lưu Item
     localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]); // cartItems -> Sau mỗi lần thêm Item thì cập nhập lại initialStateValue
+    // processCartItems();
+  }, [localStorage, cartItems]); // cartItems -> Sau mỗi lần thêm Item thì cập nhập lại initialStateValue
+
+  const processCartItems = () => {
+    let tempCartItem = cartItems;
+    const counts = {};
+    tempCartItem.forEach(function (x) {
+      counts[x.id] = (counts[x.id] || 0) + 1;
+    });
+    setCountItemsCart(counts);
+  };
 
   return (
     <>
@@ -122,7 +134,9 @@ function App() {
         loading={loading}
         items={items}
         size={size}
+        qty={qtys}
         cartItems={cartItems}
+        // countItemsCart={countItemsCart}
         handleAdd={handleAdd}
         handleRemove={handleRemove}
         handleChange={handleChange}

@@ -19,6 +19,7 @@ function DefaultLayout({
   handleRemove,
   handleChange,
   handleClear,
+  // countItemsCart,
 }) {
   return (
     <div className={cx("page-over")}>
@@ -32,6 +33,7 @@ function DefaultLayout({
         handleRemove={handleRemove}
         handleChange={handleChange}
         handleClear={handleClear}
+        // countItemsCart={countItemsCart}
       ></Footer>
     </div>
   );

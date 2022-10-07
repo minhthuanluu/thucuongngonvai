@@ -3,11 +3,6 @@ import classNames from "classnames/bind";
 import styles from "./ModalPopUp.module.scss";
 import { AlertCheckOut } from "../ToastAlert";
 
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-
 const cx = classNames.bind(styles);
 
 function ModalPopUp({
@@ -17,11 +12,10 @@ function ModalPopUp({
   handleRemove,
   handleChange,
   handleClear,
+  qtys,
+  // countItemsCart,
 }) {
   const totalPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
-
-  const { sizeprice } = cartItems;
-  console.log(sizeprice);
 
   const ref = useRef();
 
@@ -30,7 +24,6 @@ function ModalPopUp({
     const newUsers = JSON.parse(localStorage.getItem("user"));
     return newUsers ?? [];
   });
-
   const handleSubmitInfo = () => {
     setUsers((prev) => {
       const listUser = [...prev, user];
@@ -42,18 +35,85 @@ function ModalPopUp({
     ref.current.focus();
   };
 
-  // const [sizes, setSizes] = useState("");
-  // const [memori, setMemori] = useState("");
+  const renderSwitch = (param) => {
+    switch (param) {
+      case "M":
+        return "500";
+      case "L":
+        return "1500";
+      case "XL":
+        return "2000";
+      default:
+        return "0";
+    }
+  };
 
-  // const handleChange = (e, product_id) => {
-  //   let cart = JSON.parse(localStorage.getItem("cart"));
+  // const filterCart = () => {
+  //   let _cartArray = Object.entries(countItemsCart);
+  //   let newArray = [];
+  //   for (let i = 0; i < _cartArray.length; i++) {
+  //     const element = _cartArray[i];
+  //     let obj = { id: element[0], amount: element[1] };
+  //     newArray.push(obj);
+  //   }
+  //   let finalArray = [];
+  //   for (let j = 0; j < newArray.length; j++) {
+  //     const jElement = newArray[j];
+  //     let tempElement = null;
+  //     var countfiltered = cartItems.filter(function (element) {
+  //       return jElement.id == element.id;
+  //     });
 
-  //   cart.map((item) => {
-  //     if (item.id === product_id) {
-  //       return (item.size = e);
-  //     }
-  //   });
+  //     finalArray.push({
+  //       item: countfiltered[0],
+  //       count: countfiltered.length,
+  //     });
+  //   }
+
+  //   return finalArray;
   // };
+
+  const listProducts = cartItems.map((item) => {
+    // const { item } = val;
+    return (
+      <dl key={item.id} className={cx("content-flex")}>
+        <dd className={cx("content-flex-img")}>
+          <img src={item.gallery.extension} alt="" />
+        </dd>
+        <dd className={cx("content-flex-name")}>{item.name}</dd>
+        <dd className={cx("content-flex-option")}>
+          <select
+            id={item.id}
+            // value={size}
+            onChange={(e) => handleChange(e.target.value, item.id)}
+          >
+            {item.availableSizes.length > 0
+              ? item.availableSizes.map((s, index) => (
+                  <option key={index} value={s}>
+                    {s}
+                  </option>
+                ))
+              : null}
+          </select>
+        </dd>
+
+        <dd className={cx("content-flex-qty")}>
+          <button onClick={() => handleAdd(item)}>+</button>
+          {item.qty}
+          <button onClick={() => handleRemove(item)}>-</button>
+        </dd>
+
+        <dd className={cx("content-flex-price")}>
+          {/* {item.price} */}
+          {renderSwitch(size)}
+        </dd>
+
+        <dd className={cx("content-flex-del")}>
+          <button onClick={() => handleClear(item.id)}>Xóa</button>
+        </dd>
+      </dl>
+    );
+  });
 
   return (
     <>
@@ -83,57 +143,7 @@ function ModalPopUp({
                     <dt>Xóa</dt>
                   </dl>
 
-                  {cartItems.map((item) => (
-                    <dl key={item.id} className={cx("content-flex")}>
-                      <dd className={cx("content-flex-img")}>
-                        <img src={item.imageurl} alt="" />
-                      </dd>
-                      <dd className={cx("content-flex-name")}>{item.name}</dd>
-                      <dd className={cx("content-flex-option")}>
-                        <select
-                          value={size}
-                          id={item.id}
-                          onChange={(e) =>
-                            handleChange(e.target.value, item.id)
-                          }
-                        >
-                          {/* <option value="M">M</option>
-                          <option value="L">L</option>
-                          <option value="XL">XL</option> */}
-                          {item.size.map((s) => (
-                            <option key={s.id} value={s.sizename}>
-                              {s.sizename}
-                            </option>
-                          ))}
-                        </select>
-                      </dd>
-
-                      <dd className={cx("content-flex-price")}>
-                        <select value={size} id={item.id}>
-                          {/* <option value="M">{item.size[0].sizeprice}đ</option>
-                          <option value="L">{item.size[1].sizeprice}đ</option>
-                          <option value="XL">{item.size[2].sizeprice}đ</option> */}
-                          {item.size.map((s) => (
-                            <option key={s.id} value={s.sizename}>
-                              {s.sizeprice}đ
-                            </option>
-                          ))}
-                        </select>
-                      </dd>
-
-                      <dd className={cx("content-flex-qty")}>
-                        <button onClick={() => handleAdd(item)}>+</button>
-                        {item.qty}
-                        <button onClick={() => handleRemove(item)}>-</button>
-                      </dd>
-
-                      <dd className={cx("content-flex-del")}>
-                        <button onClick={() => handleClear(item.id)}>
-                          Xóa
-                        </button>
-                      </dd>
-                    </dl>
-                  ))}
+                  {listProducts}
 
                   {cartItems.length !== 0 && (
                     <>

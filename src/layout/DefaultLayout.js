@@ -12,14 +12,11 @@ const cx = classnames.bind(style);
 
 function DefaultLayout({
   loading,
-  size,
   items,
   cartItems,
   handleAdd,
   handleRemove,
-  handleChange,
   handleClear,
-  // countItemsCart,
 }) {
   return (
     <div className={cx("page-over")}>
@@ -27,13 +24,10 @@ function DefaultLayout({
       <SimpleSlider></SimpleSlider>
       <Home loading={loading} items={items} handleAdd={handleAdd}></Home>
       <Footer
-        size={size}
         cartItems={cartItems}
         handleAdd={handleAdd}
         handleRemove={handleRemove}
-        handleChange={handleChange}
         handleClear={handleClear}
-        // countItemsCart={countItemsCart}
       ></Footer>
     </div>
   );

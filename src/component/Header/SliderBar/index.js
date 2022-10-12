@@ -8,6 +8,7 @@ export default function SimpleSlider() {
     dots: false,
     arrows: true,
     infinite: true,
+    autoplay: true,
     speed: 1500,
     slidesToShow: 1,
     slidesToScroll: 1,

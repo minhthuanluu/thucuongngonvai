@@ -1,101 +1,74 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./ModalPopUp.module.scss";
 import { AlertCheckOut } from "../ToastAlert";
+import Button from "../Button";
+import images from "../../assets/images";
 
 const cx = classNames.bind(styles);
 
-function ModalPopUp({
-  size,
-  cartItems,
-  handleAdd,
-  handleRemove,
-  handleChange,
-  handleClear,
-  qtys,
-  // countItemsCart,
-}) {
-  const totalPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
+const payLoad = [
+  {
+    id: 1,
+    name: "MoMo",
+    content: images.qrmomo,
+  },
+  {
+    id: 2,
+    name: "Tiền Mặt",
+    content:
+      "Xin hãy đến gặp Thống và trả tiền 💲 cho anh ấy. Nếu không bạn sẽ bị mất ngón tay 🔪. Xin chân thành cám ơn 🤟.",
+  },
+];
 
-  const ref = useRef();
-
+function ModalPopUp({ cartItems, handleAdd, handleRemove, handleClear }) {
+  const [isChecked, setIsChecked] = useState(1);
   const [user, setUser] = useState("");
-  const [users, setUsers] = useState(() => {
-    const newUsers = JSON.parse(localStorage.getItem("user"));
+  const [phone, setPhone] = useState("");
+  const [info, setInfo] = useState(() => {
+    const newUsers = JSON.parse(localStorage.getItem("info"));
     return newUsers ?? [];
   });
-  const handleSubmitInfo = () => {
-    setUsers((prev) => {
-      const listUser = [...prev, user];
-      localStorage.setItem("user", JSON.stringify(listUser));
 
-      return listUser;
+  const ref = useRef();
+  const enabledButton = user.length >= 2 && phone.length >= 10;
+
+  const handleSubmitInfo = () => {
+    setInfo((prev) => {
+      const listInfo = [
+        ...prev,
+        {
+          name: user.trim(),
+          phone: phone.trim(),
+          payload:
+            isChecked === 1
+              ? "Thanh toán bàng Momo"
+              : "Thanh toán bằng tiền mặt",
+        },
+      ];
+      localStorage.setItem("info", JSON.stringify(listInfo));
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+      return listInfo;
     });
     setUser("");
+    setPhone("");
     ref.current.focus();
   };
 
-  const renderSwitch = (param) => {
-    switch (param) {
-      case "M":
-        return "500";
-      case "L":
-        return "1500";
-      case "XL":
-        return "2000";
-      default:
-        return "0";
+  const handleChangeNumber = (e) => {
+    const rex = /^[0-9\b]+$/; //rules
+    if (e.target.value === "" || rex.test(e.target.value)) {
+      setPhone(e.target.value);
     }
   };
 
-  // const filterCart = () => {
-  //   let _cartArray = Object.entries(countItemsCart);
-  //   let newArray = [];
-  //   for (let i = 0; i < _cartArray.length; i++) {
-  //     const element = _cartArray[i];
-  //     let obj = { id: element[0], amount: element[1] };
-  //     newArray.push(obj);
-  //   }
-  //   let finalArray = [];
-  //   for (let j = 0; j < newArray.length; j++) {
-  //     const jElement = newArray[j];
-  //     let tempElement = null;
-  //     var countfiltered = cartItems.filter(function (element) {
-  //       return jElement.id == element.id;
-  //     });
-
-  //     finalArray.push({
-  //       item: countfiltered[0],
-  //       count: countfiltered.length,
-  //     });
-  //   }
-
-  //   return finalArray;
-  // };
-
   const listProducts = cartItems.map((item) => {
-    // const { item } = val;
     return (
       <dl key={item.id} className={cx("content-flex")}>
         <dd className={cx("content-flex-img")}>
-          <img src={item.gallery.extension} alt="" />
+          <img src={item.gallery.url} alt="" />
         </dd>
         <dd className={cx("content-flex-name")}>{item.name}</dd>
-        <dd className={cx("content-flex-option")}>
-          <select
-            id={item.id}
-            // value={size}
-            onChange={(e) => handleChange(e.target.value, item.id)}
-          >
-            {item.availableSizes.length > 0
-              ? item.availableSizes.map((s, index) => (
-                  <option key={index} value={s}>
-                    {s}
-                  </option>
-                ))
-              : null}
-          </select>
-        </dd>
 
         <dd className={cx("content-flex-qty")}>
           <button onClick={() => handleAdd(item)}>+</button>
@@ -104,8 +77,7 @@ function ModalPopUp({
         </dd>
 
         <dd className={cx("content-flex-price")}>
-          {/* {item.price} */}
-          {renderSwitch(size)}
+          {item.price.toLocaleString()}đ
         </dd>
 
         <dd className={cx("content-flex-del")}>
@@ -114,6 +86,8 @@ function ModalPopUp({
       </dl>
     );
   });
+
+  const totalPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
 
   return (
     <>
@@ -137,7 +111,6 @@ function ModalPopUp({
                   <dl className={cx("content-flex")}>
                     <dt>Hình ảnh</dt>
                     <dt>Sản phẩm</dt>
-                    <dt>Chọn size</dt>
                     <dt>Số lượng</dt>
                     <dt>Giá tiền</dt>
                     <dt>Xóa</dt>
@@ -158,11 +131,11 @@ function ModalPopUp({
             </div>
             <div className={cx("right-info")}>
               <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-                Thêm thông tin
+                Thêm thông tin cá nhân
               </h2>
               <div className={cx("info-user")}>
                 <p>
-                  Tên:{" "}
+                  <span>Tên:</span>
                   <input
                     type="text"
                     ref={ref}
@@ -170,14 +143,64 @@ function ModalPopUp({
                     onChange={(e) => setUser(e.target.value)}
                   />
                 </p>
+                <p>
+                  <span>Điện thoại:</span>
+                  <input
+                    type="text"
+                    maxLength="11"
+                    value={phone}
+                    onChange={handleChangeNumber}
+                  />
+                </p>
               </div>
 
-              <div
+              <div className={cx("info-payload")}>
+                <h5>Hình thức thanh toán</h5>
+                <div>
+                  {payLoad.map((pay) => (
+                    <>
+                      <label key={pay.id}>
+                        <input
+                          type="radio"
+                          checked={isChecked === pay.id}
+                          onChange={() => setIsChecked(pay.id)}
+                        />
+                        &nbsp;{pay.name}
+                      </label>
+                      &emsp;
+                    </>
+                  ))}
+                </div>
+
+                <ul>
+                  {payLoad.map((pay) => (
+                    <li
+                      key={pay.id}
+                      style={
+                        isChecked === pay.id
+                          ? { display: "block" }
+                          : { display: "none" }
+                      }
+                    >
+                      {pay.id === 1 ? (
+                        <img src={pay.content} />
+                      ) : (
+                        <p>{pay.content}</p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <Button
                 className={cx("btn-cart")}
+                elementdiv="true"
+                disabled
+                enabledButton={enabledButton}
                 onClick={() => handleSubmitInfo()}
               >
-                <AlertCheckOut></AlertCheckOut>
-              </div>
+                <AlertCheckOut enabledButton={enabledButton}></AlertCheckOut>
+              </Button>
             </div>
           </>
         )}

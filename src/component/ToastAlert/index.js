@@ -24,7 +24,7 @@ export const AlertAddCart = () => {
   );
 };
 
-export const AlertCheckOut = () => {
+export const AlertCheckOut = ({ enabledButton }) => {
   const notify = () =>
     toast.success("Bạn đã đặt hàng thành công!", {
       position: "top-center",
@@ -38,7 +38,9 @@ export const AlertCheckOut = () => {
 
   return (
     <>
-      <button onClick={notify}>Đặt Hàng</button>
+      <button disabled={!enabledButton} onClick={notify}>
+        Đặt Hàng
+      </button>
     </>
   );
 };

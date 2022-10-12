@@ -368,6 +368,41 @@ ul {
 
 .btn-delivery img {
   width: 60px;
+  /* transition: all 0.5s;
+  animation-name: ring-ring;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite; */
+  cursor: pointer;
+}
+
+.btn-delivery {
+  box-shadow: 2px 4.6px 27px 3px rgb(0 0 0 / 43%);
+  position: fixed;
+  bottom: 50%;
+  right: 32px;
+  transform: translateY(50%);
+  z-index: 3;
+  border-radius: 50%;
+}
+
+.btn-cart {
+  position: fixed;
+  bottom: 50%;
+  right: 32px;
+  transform: translateY(50%);
+  z-index: 2;
+  border-radius: 50%;
+  transition: 0.4s;
+  opacity: 0;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-cart img{
+  width: 50px;
   transition: all 0.5s;
   animation-name: ring-ring;
   animation-duration: 1.5s;
@@ -375,13 +410,43 @@ ul {
   cursor: pointer;
 }
 
-.btn-delivery {
+.btn-cart.show-menu-cart{
   box-shadow: 2px 4.6px 27px 3px rgb(0 0 0 / 43%);
+  right: 70px;
+  bottom: 58%;
+  opacity: 1;
+}
+
+.btn-history {
   position: fixed;
-  bottom: 45px;
+  bottom: 50%;
   right: 32px;
+  transform: translateY(50%);
   z-index: 2;
   border-radius: 50%;
+  transition: 0.8s;
+  opacity: 0;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-history img{
+  width: 30px;
+  transition: all 0.5s;
+  animation-name: ring-ring;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  cursor: pointer;
+}
+
+.btn-history.show-menu-history{
+  box-shadow: 2px 4.6px 27px 3px rgb(0 0 0 / 43%);
+  right: 120px;
+  bottom: 50%;
+  opacity: 1;
 }
 
 .btn-qsmm img{

@@ -16,16 +16,13 @@
             width: 15%;
         }
         &:nth-of-type(2){
-            width: 30%;
+            width: 45%;
         }
         &:nth-of-type(3) {
             width: 15%;
         }
         &:nth-of-type(4) {
-            width: 20%;
-        }
-        &:nth-of-type(5) {
-            width: 10%;
+            width: 15%;
         }
         &:last-child{
             width: 10%;
@@ -68,7 +65,7 @@
 .last-info{
     dd{
         &:first-child{
-            width: 80%;
+            width: 75%;
             font-size: 20px;
             font-weight: bold;
         }
@@ -77,23 +74,30 @@
 
 
 .btn-cart{
-    margin: 30px 0 0 !important;
+    margin: 30px auto !important;
+    width: 200px !important;
+    pointer-events: none;
     button{
         width: 100%;
-        max-width: 200px;
+        max-width: 100%;
         margin: 0 auto;
         border-radius: 5px;
+        padding: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
         background: #d8b979;
         border: none;
         color: #ffffff;
-        padding: 10px;
         cursor: pointer;
         transition: 0.4s;
+        pointer-events: all;
         &:hover{
             background: #9c8454;
+        }
+        &:disabled{
+            opacity: 0.3;
+            pointer-events: none;
         }
     }
 }
@@ -135,14 +139,43 @@ select{
         width: 30%;
         margin: 0;
         .info-user{
+            p{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                span{
+                    width: 25%;
+                }
+            }
             input{
+                width: 73%;
                 outline: none;
                 border: 1px solid #ccc;
                 padding: 5px;
             }
         }
+        .info-payload{
+            div{
+                margin-bottom: 10px;
+                max-width: 100% !important;
+            }
+            ul{
+                li{
+                    height: 125px;
+                    margin-bottom: 0;
+                    img{
+                        width: 35%;
+                    }
+                    p{
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
     }
 }
+
+
 
 @media screen and (max-width: 767px){
     .modal-pop-up{

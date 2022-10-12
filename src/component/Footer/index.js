@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import Popup from "react-animated-popup";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/animations/scale-extreme.css";
 import images from "../../assets/images";
 import ModalPopUp from "../ModalPopUp";
 import classnames from "classnames/bind";
@@ -8,7 +11,6 @@ import style from "./Footer.module.scss";
 const cx = classnames.bind(style);
 
 function Footer({
-  size,
   cartItems,
   handleAdd,
   handleRemove,
@@ -17,22 +19,51 @@ function Footer({
   countItemsCart,
 }) {
   const [show, setShow] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleModalPopUp = () => {
     setShow(!show);
   };
 
+  const handleShowMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
   return (
     <>
       <footer>
-        <a onClick={() => handleModalPopUp()} className="btn-delivery">
-          <img src={images.delivery} alt="" />
-          {cartItems.length ? (
-            <span className={cx("qty")}>{cartItems.length}</span>
-          ) : (
-            ""
-          )}
-        </a>
+        <Tippy content="Thanh Công Cụ" animation="scale-extreme" delay={(0, 0)}>
+          <a onClick={() => handleShowMenu()} className="btn-delivery">
+            <img src={images.delivery} alt="" />
+          </a>
+        </Tippy>
+
+        <Tippy content="Giỏ Hàng" animation="scale-extreme" delay={(0, 0)}>
+          <a
+            onClick={() => handleModalPopUp()}
+            className={cx("btn-cart", showMenu ? "show-menu-cart" : "")}
+          >
+            <img src={images.imgcart} alt="" />
+            {cartItems.length ? (
+              <span className={cx("qty")}>{cartItems.length}</span>
+            ) : (
+              ""
+            )}
+          </a>
+        </Tippy>
+
+        <Tippy
+          content="Lịch Sử Đơn Hàng"
+          animation="scale-extreme"
+          delay={(0, 0)}
+        >
+          <a
+            onClick={() => handleModalPopUp()}
+            className={cx("btn-history", showMenu ? "show-menu-history" : "")}
+          >
+            <img src={images.imghistory} alt="" />
+          </a>
+        </Tippy>
 
         <div className={cx("popup-over", show ? "show" : "")}>
           <Popup
@@ -43,7 +74,6 @@ function Footer({
             <a onClick={() => handleModalPopUp()}>x</a>
             <ModalPopUp
               cartItems={cartItems}
-              size={size}
               handleAdd={handleAdd}
               handleRemove={handleRemove}
               handleChange={handleChange}

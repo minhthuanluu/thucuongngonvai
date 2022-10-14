@@ -1,27 +1,28 @@
 {
   "files": {
-    "main.css": "/thucuongngonvai/static/css/main.4336faed.css",
-    "main.js": "/thucuongngonvai/static/js/main.1a174b76.js",
+    "main.css": "/thucuongngonvai/static/css/main.33eb3017.css",
+    "main.js": "/thucuongngonvai/static/js/main.51007839.js",
     "static/js/787.389c58d8.chunk.js": "/thucuongngonvai/static/js/787.389c58d8.chunk.js",
     "static/media/banner3.jpg": "/thucuongngonvai/static/media/banner3.f25ce14769b29a3f9f9d.jpg",
     "static/media/banner1.jpg": "/thucuongngonvai/static/media/banner1.e5fd9ec77670724c5f30.jpg",
     "static/media/banner2.jpg": "/thucuongngonvai/static/media/banner2.06c2ecf045ec5046c829.jpg",
-    "static/media/img_history.png": "/thucuongngonvai/static/media/img_history.19dbe1333e6adbccb752.png",
-    "static/media/img_cart.png": "/thucuongngonvai/static/media/img_cart.dfb7453081c24c9ce062.png",
     "static/media/loading.gif": "/thucuongngonvai/static/media/loading.3a3a5392d64ea0d30f5c.gif",
     "static/media/qr_momo.jpg": "/thucuongngonvai/static/media/qr_momo.c6aa1b7d30185999ea98.jpg",
+    "static/media/img_cart.png": "/thucuongngonvai/static/media/img_cart.5ae8468cf590c1ac0ee4.png",
+    "static/media/img_history.png": "/thucuongngonvai/static/media/img_history.6d2c77402da3d0381195.png",
+    "static/media/button_delivery.webp": "/thucuongngonvai/static/media/button_delivery.af0633bd6c516d1664d6.webp",
     "static/media/slick.svg": "/thucuongngonvai/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/thucuongngonvai/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/thucuongngonvai/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/thucuongngonvai/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/thucuongngonvai/index.html",
     "static/media/ic_scoll.webp": "/thucuongngonvai/static/media/ic_scoll.6c9306948c5c8c92e303.webp",
-    "main.4336faed.css.map": "/thucuongngonvai/static/css/main.4336faed.css.map",
-    "main.1a174b76.js.map": "/thucuongngonvai/static/js/main.1a174b76.js.map",
+    "main.33eb3017.css.map": "/thucuongngonvai/static/css/main.33eb3017.css.map",
+    "main.51007839.js.map": "/thucuongngonvai/static/js/main.51007839.js.map",
     "787.389c58d8.chunk.js.map": "/thucuongngonvai/static/js/787.389c58d8.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4336faed.css",
-    "static/js/main.1a174b76.js"
+    "static/css/main.33eb3017.css",
+    "static/js/main.51007839.js"
   ]
 }

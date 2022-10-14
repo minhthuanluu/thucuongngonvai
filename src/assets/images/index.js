@@ -6,7 +6,7 @@ const images = {
   qrmomo: require("../../assets/images/qr_momo.jpg"),
   imgcart: require("../../assets/images/img_cart.png"),
   imghistory: require("../../assets/images/img_history.png"),
-  delivery: require("../../assets/images/button_delivery.png"),
+  delivery: require("../../assets/images/button_delivery.webp"),
   loading: require("../../assets/images/loading.gif"),
   //   noImage: require("../Images/no-image.png"),
 };

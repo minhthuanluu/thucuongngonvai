@@ -162,6 +162,7 @@
   font-size: 16px;
   font-family: Muli;
   display: inline-block;
+  transition: 0.4s;
 }
 
 .button-type-one:hover {
@@ -169,9 +170,27 @@
   color: #d3b673;
 }
 
+.flex{
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
 .container {
   padding: 0 !important;
 }
+
+.field__select{
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.field__input{
+  padding: 5px 16px;
+  font-size: 18px;
+}
+
 
 /* footer */
 
@@ -364,32 +383,38 @@ ul {
   align-items: center;
   background: black;
   z-index: 99999;
-}
-
-.btn-delivery img {
-  width: 60px;
-  /* transition: all 0.5s;
-  animation-name: ring-ring;
-  animation-duration: 1.5s;
-  animation-iteration-count: infinite; */
   cursor: pointer;
 }
 
 .btn-delivery {
   box-shadow: 2px 4.6px 27px 3px rgb(0 0 0 / 43%);
   position: fixed;
-  bottom: 50%;
-  right: 32px;
-  transform: translateY(50%);
+  bottom: 70px;
+  right: 50px;
   z-index: 3;
   border-radius: 50%;
+  transition: 0.4s;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  cursor: pointer;
+}
+
+.btn-delivery img{
+  width: 60px;
+  transition: all 0.5s;
+  animation-name: ring-ring;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
 }
 
 .btn-cart {
   position: fixed;
-  bottom: 50%;
-  right: 32px;
-  transform: translateY(50%);
+  bottom: 70px;
+  right: 50px;
   z-index: 2;
   border-radius: 50%;
   transition: 0.4s;
@@ -399,6 +424,8 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #fff;
+  cursor: pointer;
 }
 
 .btn-cart img{
@@ -407,22 +434,20 @@ ul {
   animation-name: ring-ring;
   animation-duration: 1.5s;
   animation-iteration-count: infinite;
-  cursor: pointer;
 }
 
 .btn-cart.show-menu-cart{
   box-shadow: 2px 4.6px 27px 3px rgb(0 0 0 / 43%);
-  right: 70px;
-  bottom: 58%;
+  bottom: 150px;
   opacity: 1;
 }
 
 .btn-history {
   position: fixed;
-  bottom: 50%;
-  right: 32px;
+  bottom: 70px;
+  right: 50px;
   transform: translateY(50%);
-  z-index: 2;
+  z-index: 1;
   border-radius: 50%;
   transition: 0.8s;
   opacity: 0;
@@ -431,22 +456,30 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #fff;
+  cursor: pointer;
 }
 
 .btn-history img{
-  width: 30px;
+  width: 40px;
   transition: all 0.5s;
   animation-name: ring-ring;
   animation-duration: 1.5s;
   animation-iteration-count: infinite;
-  cursor: pointer;
 }
 
 .btn-history.show-menu-history{
   box-shadow: 2px 4.6px 27px 3px rgb(0 0 0 / 43%);
-  right: 120px;
-  bottom: 50%;
+  bottom: 260px;
   opacity: 1;
+}
+
+.btn-delivery:hover, .btn-cart:hover, .btn-history:hover{
+  background: #eee0c3;
+}
+
+.btn-delivery.active, .btn-cart.active, .btn-history.active{
+  background: #eee0c3;
 }
 
 .btn-qsmm img{

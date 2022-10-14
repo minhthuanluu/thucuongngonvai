@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import QRCode from "qrcode.react";
 import classNames from "classnames/bind";
 import styles from "./ModalPopUp.module.scss";
 import { AlertCheckOut } from "../ToastAlert";
@@ -33,13 +34,14 @@ function ModalPopUp({ cartItems, handleAdd, handleRemove, handleClear }) {
   const ref = useRef();
   const enabledButton = user.length >= 2 && phone.length >= 10;
 
+  // Thêm thông tin khách hàng
   const handleSubmitInfo = () => {
     setInfo((prev) => {
       const listInfo = [
         ...prev,
         {
-          name: user.trim(),
-          phone: phone.trim(),
+          name: user.replace(/ +(?= )/g, "").trim(),
+          phone: phone,
           payload:
             isChecked === 1
               ? "Thanh toán bàng Momo"
@@ -55,6 +57,7 @@ function ModalPopUp({ cartItems, handleAdd, handleRemove, handleClear }) {
     ref.current.focus();
   };
 
+  // Chức năng giúp input chỉ được nhập số
   const handleChangeNumber = (e) => {
     const rex = /^[0-9\b]+$/; //rules
     if (e.target.value === "" || rex.test(e.target.value)) {
@@ -71,9 +74,9 @@ function ModalPopUp({ cartItems, handleAdd, handleRemove, handleClear }) {
         <dd className={cx("content-flex-name")}>{item.name}</dd>
 
         <dd className={cx("content-flex-qty")}>
-          <button onClick={() => handleAdd(item)}>+</button>
-          {item.qty}
           <button onClick={() => handleRemove(item)}>-</button>
+          {item.qty}
+          <button onClick={() => handleAdd(item)}>+</button>
         </dd>
 
         <dd className={cx("content-flex-price")}>
@@ -183,9 +186,19 @@ function ModalPopUp({ cartItems, handleAdd, handleRemove, handleClear }) {
                       }
                     >
                       {pay.id === 1 ? (
-                        <img src={pay.content} />
+                        // <img src={pay.content} />
+                        <>
+                          <QRCode
+                            id="qrcode"
+                            value={user + phone}
+                            size={100}
+                            level="H"
+                          />
+                          <h5>{totalPrice.toLocaleString()} VND</h5>
+                          <p>Vui lòng thanh toán trước khi đặt hàng</p>
+                        </>
                       ) : (
-                        <p>{pay.content}</p>
+                        <h6>{pay.content}</h6>
                       )}
                     </li>
                   ))}

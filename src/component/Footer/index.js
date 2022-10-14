@@ -33,15 +33,27 @@ function Footer({
     <>
       <footer>
         <Tippy content="Thanh Công Cụ" animation="scale-extreme" delay={(0, 0)}>
-          <a onClick={() => handleShowMenu()} className="btn-delivery">
+          <a
+            onClick={() => handleShowMenu()}
+            className={cx("btn-delivery", showMenu ? "active" : "")}
+          >
             <img src={images.delivery} alt="" />
+            {cartItems.length ? (
+              <span className={cx("qty")}>{cartItems.length}</span>
+            ) : (
+              ""
+            )}
           </a>
         </Tippy>
 
         <Tippy content="Giỏ Hàng" animation="scale-extreme" delay={(0, 0)}>
           <a
             onClick={() => handleModalPopUp()}
-            className={cx("btn-cart", showMenu ? "show-menu-cart" : "")}
+            className={cx(
+              "btn-cart",
+              showMenu ? "show-menu-cart" : "",
+              show ? "active" : ""
+            )}
           >
             <img src={images.imgcart} alt="" />
             {cartItems.length ? (
@@ -58,7 +70,7 @@ function Footer({
           delay={(0, 0)}
         >
           <a
-            onClick={() => handleModalPopUp()}
+            // onClick={() => handleModalPopUp()}
             className={cx("btn-history", showMenu ? "show-menu-history" : "")}
           >
             <img src={images.imghistory} alt="" />

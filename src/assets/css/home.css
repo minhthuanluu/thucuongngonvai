@@ -4,6 +4,7 @@ body {
   scrollbar-width: none;
   /* for Firefox */
   overflow-y: scroll;
+  font-family: Muli;
 }
 
 body::-webkit-scrollbar {
@@ -94,11 +95,37 @@ body::-webkit-scrollbar {
   }
 }
 
-/* .icon-bottom-title {
-  background: url(../images/home_line.webp) no-repeat center;
-  width: 315px;
-  height: 30px;
-} */
+.icon-bottom-title {
+  background: url(../images/logo.jpg) no-repeat center;
+  background-size: 100%;
+  width: 80px;
+  height: 80px;
+  position: relative;
+}
+
+.icon-bottom-title::before{
+  position: absolute;
+  content: "";
+  background: #0C1D2E;
+  width: 300%;
+  height:0.1px;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.icon-bottom-title::after{
+  position: absolute;
+  content: "";
+  background: #0C1D2E;
+  width: 400%;
+  height: 0.1px;
+  top: 54%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
 
 .home-hot-products {
   padding: 50px 0 60px 0;
@@ -543,6 +570,7 @@ body::-webkit-scrollbar {
   padding: 2px 16px;
   margin-top: 16px;
   margin-bottom: 12px;
+  border-radius: 5px;
 }
 
 .homeSilder .slick-prev,

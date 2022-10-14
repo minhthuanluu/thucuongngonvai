@@ -39,6 +39,7 @@
         z-index: 101;
         cursor: pointer;
         transition: 0.4s;
+        font-family: cursive;
         &:hover{
             background: #ccc;
         }
@@ -51,7 +52,7 @@
 }
 
 .show{
-    z-index: 2;
+    z-index: 10;
     background: rgb(0 0 0 / 50%);
     opacity: 1;
 }

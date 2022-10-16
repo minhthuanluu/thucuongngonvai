@@ -1,5 +1,5 @@
 import React from "react";
-// import MenuBar from "./MenuBar";
+import MenuBar from "./MenuBar";
 function Header() {
   return (
     <>
@@ -12,11 +12,11 @@ function Header() {
               alt="logo"
             />
           </a>
-          {/* <div className="menu">
+          <div className="menu">
             <div className="menu-primary">
               <MenuBar></MenuBar>
             </div>
-          </div> */}
+          </div>
         </div>
       </header>
     </>

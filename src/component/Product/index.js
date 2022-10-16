@@ -47,7 +47,7 @@ function Product({ loading, items, handleAdd }) {
     <>
       {loading ? (
         <div>
-          <img src={images.loading} />
+          <img src={images.loading} alt="loading"/>
         </div>
       ) : (
         <>

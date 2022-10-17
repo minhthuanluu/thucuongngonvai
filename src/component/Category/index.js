@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -23,7 +23,47 @@ export default function CategoryTabs({
     setValue(newValue);
   };
 
+  const [data, setData] = useState(sort)
+  const [users, setUsers] = useState([])
+  const [totalOfPages, setTotalOfPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const elementPerPage = 4
+  
+  useEffect(() => {
+    const init = () => {
+      if (sort) {
+        setData(sort);
+      }
+    };
+    init();
+
+    const totalOfData = data.length
+    const startAt = currentPage * elementPerPage - elementPerPage
+
+  
+    setTotalOfPages(Math.ceil(totalOfData / elementPerPage));
+    setUsers(data.slice(startAt, startAt + elementPerPage))
+    
+
+    console.log({
+      totalOfData,
+      elementPerPage,
+      totalOfPages,
+      startAt,
+      currentPage
+    })
+    // eslint-disable-next-line
+  }, [sort, currentPage])
+
+  const handleCurrentPage = e => {
+    e.preventDefault()
+
+    setCurrentPage(Number(e.target.id))
+  }
+
   return (
+    <>
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
         <Box
@@ -37,7 +77,7 @@ export default function CategoryTabs({
         </Box>
         <TabPanel value="1">
           <div className="list-product">
-            {sort
+            {users
               .filter((item) =>
                 item.gallery.extension
                   .toLowerCase()
@@ -45,34 +85,48 @@ export default function CategoryTabs({
               )
               .sort(sortMethods[filters].method)
               .map((item) => {
-                if (item.store_id === 1) {
-                  return (
-                    <div className="product-card" key={item.id}>
-                      <div className="img-wrap">
-                        <img src={item.gallery.url} alt="" />
-                      </div>
-                      <div className="product-card-content">
-                        <div className="product-title">{item.name}</div>
-                        <div className="product-price">
-                          <div className="product-origin-price">
-                            {item.price.toLocaleString()}đ
+                return (
+                  <div className="product-card" key={item.id}>
+                    <div className="img-wrap">
+                      <img src={item.gallery.url} alt="" />
+                    </div>
+                    <div className="product-card-content">
+                      <div className="product-title">{item.name}</div>
+                      <div className="product-price">
+                        <div className="product-origin-price">
+                          {item.price.toLocaleString()}đ
+                        </div>
+                        {item.sale !== 0 ? (
+                          <div className="product-sale-price">
+                            {item.sale.toLocaleString()}đ
                           </div>
-                          {item.sale !== 0 ? (
-                            <div className="product-sale-price">
-                              {item.sale.toLocaleString()}đ
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                        <div onClick={() => handleAdd(item)}>
-                          <AlertAddCart></AlertAddCart>
-                        </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                      <div onClick={() => handleAdd(item)}>
+                        <AlertAddCart></AlertAddCart>
                       </div>
                     </div>
-                  );
-                }
+                  </div>
+                );
               })}
+          </div>
+          <div className="navigator">
+            {[...Array(totalOfPages).keys()].map(index => {
+              const page = index + 1
+    
+              return (
+                <button
+                  key={page}
+                  className={index === currentPage - 1 ? 'active' : ''}
+                  id={page}
+                  onClick={handleCurrentPage}
+                >
+                  {page}{' '}
+                </button>
+              )
+            })}
           </div>
         </TabPanel>
         <TabPanel value="2">
@@ -114,8 +168,12 @@ export default function CategoryTabs({
                 }
               })}
           </div>
+      
         </TabPanel>
+       
       </TabContext>
-    </Box>
+      
+    </Box></>
+
   );
 }

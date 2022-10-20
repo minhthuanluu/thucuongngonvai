@@ -6,10 +6,12 @@ import "./assets/css/common.css";
 import "./assets/css/home.css";
 import DefaultLayout from "./layout/DefaultLayout";
 
+const tabs = ["banam", "basau"];
 function App() {
   // const [size, setSize] = useState("");
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
+  const [type, setType] = useState("banam");
   const [cartItems, setCartItems] = useState(() => {
     const cartFromLocalStore = JSON.parse(localStorage.getItem("cart"));
     return cartFromLocalStore ?? [];
@@ -43,18 +45,6 @@ function App() {
     }
   };
 
-  // Thay đổi giá trị trong Size select option
-  // const handleChange = (e, product_id) => {
-  //   let cart = JSON.parse(localStorage.getItem("cart"));
-
-  //   cart.map((item) => {
-  //     if (item.id === product_id) {
-  //       return (item.size = e);
-  //     }
-  //   });
-  //   setSize(localStorage.setItem("cart", JSON.stringify(cart)));
-  // };
-
   // Xóa từng Item trong Cart
   const handleClear = (product_id) => {
     setCartItems(cartItems.filter((item) => item.id !== product_id));
@@ -62,7 +52,7 @@ function App() {
 
   useEffect(() => {
     // Get API
-    fetch("https://6336bb585327df4c43c83309.mockapi.io/api/v1/thucuongngonvai")
+    fetch(`https://6336bb585327df4c43c83309.mockapi.io/api/v1/${type}`)
       .then((res) => res.json())
       .then((items) => {
         setItems(items[0].products);
@@ -76,7 +66,7 @@ function App() {
 
     // Tạo Cart trong localStore để lưu Item
     // localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]); // cartItems -> Sau mỗi lần thêm Item thì cập nhập lại initialStateValue
+  }, [cartItems, type]); // cartItems -> Sau mỗi lần thêm Item thì cập nhập lại initialStateValue
 
   return (
     <>
@@ -87,6 +77,9 @@ function App() {
         handleAdd={handleAdd}
         handleRemove={handleRemove}
         handleClear={handleClear}
+        tabs={tabs}
+        setType={setType}
+        type={type}
       ></DefaultLayout>
     </>
   );

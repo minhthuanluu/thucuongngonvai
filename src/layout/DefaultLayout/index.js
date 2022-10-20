@@ -9,7 +9,6 @@ import { publicRoutes } from "../../routes";
 import FirstLayout from "../FirstLayout";
 import SecondLayout from "../SecondLayout";
 
-
 const cx = classnames.bind(style);
 
 function DefaultLayout({
@@ -19,6 +18,9 @@ function DefaultLayout({
   handleAdd,
   handleRemove,
   handleClear,
+  tabs,
+  setType,
+  type,
 }) {
   return (
     <div className={cx("page-over")}>
@@ -27,14 +29,31 @@ function DefaultLayout({
         {publicRoutes.map((route, index) => {
           const Page = route.component;
           let Layout = FirstLayout;
-     
+
           if (route.layout) {
             Layout = route.layout;
-          } else if ( route.layout === SecondLayout ){
+          } else if (route.layout === SecondLayout) {
             Layout = SecondLayout;
           }
 
-          return <Route key={index} path={route.path} element={<Layout><Page loading={loading} items={items} handleAdd={handleAdd} /></Layout>}></Route>
+          return (
+            <Route
+              key={index}
+              path={route.path}
+              element={
+                <Layout>
+                  <Page
+                    loading={loading}
+                    items={items}
+                    handleAdd={handleAdd}
+                    tabs={tabs}
+                    setType={setType}
+                    type={type}
+                  />
+                </Layout>
+              }
+            ></Route>
+          );
         })}
       </Routes>
       <Footer

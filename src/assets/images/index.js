@@ -1,5 +1,6 @@
 const images = {
-  //   logo: require("../assets/images/logo_agLabo.svg").default,
+  logo: require("../../assets/images/MilkTealogoAGL.png"),
+  logohead: require("../../assets/images/MilkTealogoAGL-head.png"),
   banner1: require("../../assets/images/banner1.jpg"),
   banner2: require("../../assets/images/banner2.jpg"),
   banner3: require("../../assets/images/banner3.jpg"),

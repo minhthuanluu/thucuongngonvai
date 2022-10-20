@@ -1,16 +1,13 @@
 import React from "react";
 import MenuBar from "./MenuBar";
+import images from "../../assets/images";
 function Header() {
   return (
     <>
       <header id="header-wrap">
         <div id="header" className="container">
           <a className="logo" href="/">
-            <img
-              className="logo-img"
-              src="https://tocotocotea.com/wp-content/uploads/2021/04/Logo-ngang-01.png"
-              alt="logo"
-            />
+            <img className="logo-img" src={images.logohead} alt="logo" />
           </a>
           <div className="menu">
             <div className="menu-primary">

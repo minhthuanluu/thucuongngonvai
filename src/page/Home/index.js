@@ -1,7 +1,7 @@
 import React from "react";
 import Product from "../../component/Product";
 
-function Home({ loading, items, handleAdd }) {
+function Home({ loading, items, handleAdd, tabs, setType, type }) {
   return (
     <>
       <main className="home">
@@ -17,6 +17,9 @@ function Home({ loading, items, handleAdd }) {
               loading={loading}
               items={items}
               handleAdd={handleAdd}
+              tabs={tabs}
+              setType={setType}
+              type={type}
             ></Product>
           </div>
         </div>

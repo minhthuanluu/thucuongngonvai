@@ -96,10 +96,10 @@ body::-webkit-scrollbar {
 }
 
 .icon-bottom-title {
-  background: url(../images/logo.jpg) no-repeat center;
-  background-size: 100%;
-  width: 80px;
-  height: 80px;
+  background: url(../images/MilkTealogoAGL.png) no-repeat center, #fff;
+  background-size: 80%;
+  width: 100px;
+  height: 100px;
   position: relative;
 }
 
@@ -697,6 +697,12 @@ body::-webkit-scrollbar {
 .popup-content a img {
   background-image: transparent !important;
 }
+
+.react-hooks-paginator .page-item:hover .page-link, .react-hooks-paginator .page-item.active .page-link{
+  border: 1px solid #d3b673 !important;
+  background: #d3b673 !important;
+}
+
 
 @media only screen and (max-width: 768px) {
 

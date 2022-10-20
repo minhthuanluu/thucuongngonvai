@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import classNames from "classnames/bind";
-import styles from "./Product.module.scss";
+// import classNames from "classnames/bind";
+// import styles from "./Product.module.scss";
 import images from "../../assets/images";
 
 import CategoryTabs from "../Category";
 
-const cx = classNames.bind(styles);
+// const cx = classNames.bind(styles);
 
-function Product({ loading, items, handleAdd }) {
+function Product({ loading, items, handleAdd, tabs, setType, type }) {
   const [sort, setSort] = useState(items);
   const [inputSearch, setInputSearch] = useState("");
   const [filters, setFilters] = useState("default");
@@ -47,7 +47,7 @@ function Product({ loading, items, handleAdd }) {
     <>
       {loading ? (
         <div>
-          <img src={images.loading} alt="loading"/>
+          <img src={images.loading} alt="loading" />
         </div>
       ) : (
         <>
@@ -102,6 +102,9 @@ function Product({ loading, items, handleAdd }) {
             filters={filters}
             inputSearch={inputSearch}
             handleAdd={handleAdd}
+            tabs={tabs}
+            setType={setType}
+            type={type}
           ></CategoryTabs>
         </>
       )}

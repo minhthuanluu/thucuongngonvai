@@ -8,6 +8,7 @@ import { AlertAddCart } from "../ToastAlert";
 
 import classNames from "classnames/bind";
 import styles from "./Category.module.scss";
+import Paginator from "react-hooks-paginator";
 
 const cx = classNames.bind(styles);
 
@@ -17,163 +18,84 @@ export default function CategoryTabs({
   filters,
   inputSearch,
   handleAdd,
+  tabs,
+  setType,
+  type,
 }) {
-  const [value, setValue] = useState("1");
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  // const [value, setValue] = useState("1");
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
 
-  const [data, setData] = useState(sort)
-  const [users, setUsers] = useState([])
-  const [totalOfPages, setTotalOfPages] = useState(0)
-  const [currentPage, setCurrentPage] = useState(1)
+  const pageLimit = 8;
 
-  const elementPerPage = 4
-  
+  const [offset, setOffset] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentData, setCurrentData] = useState([]);
+
   useEffect(() => {
-    const init = () => {
-      if (sort) {
-        setData(sort);
-      }
-    };
-    init();
-
-    const totalOfData = data.length
-    const startAt = currentPage * elementPerPage - elementPerPage
-
-  
-    setTotalOfPages(Math.ceil(totalOfData / elementPerPage));
-    setUsers(data.slice(startAt, startAt + elementPerPage))
-    
-
-    console.log({
-      totalOfData,
-      elementPerPage,
-      totalOfPages,
-      startAt,
-      currentPage
-    })
-    // eslint-disable-next-line
-  }, [sort, currentPage])
-
-  const handleCurrentPage = e => {
-    e.preventDefault()
-
-    setCurrentPage(Number(e.target.id))
-  }
+    setCurrentData(sort.slice(offset, offset + pageLimit));
+  }, [offset, sort]);
 
   return (
     <>
-    <Box sx={{ width: "100%", typography: "body1" }}>
-      <TabContext value={value}>
-        <Box
-          sx={{ borderBottom: 1, borderColor: "divider" }}
-          className={cx("tab-list")}
-        >
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Trà sữa bà 2" value="1" />
-            <Tab label="Trà sữa bà 3" value="2" />
-          </TabList>
-        </Box>
-        <TabPanel value="1">
-          <div className="list-product">
-            {users
-              .filter((item) =>
-                item.gallery.extension
-                  .toLowerCase()
-                  .includes(inputSearch.toLowerCase())
-              )
-              .sort(sortMethods[filters].method)
-              .map((item) => {
-                return (
-                  <div className="product-card" key={item.id}>
-                    <div className="img-wrap">
-                      <img src={item.gallery.url} alt="" />
+      <ul className={cx("tab-list")}>
+        {tabs.map((tab, index) => (
+          <li key={index} className={type === tab ? cx("active") : ""}>
+            <button onClick={() => setType(tab)}>
+              {tab === "banam" ? <span>Bà Năm</span> : <span>Bà Sáu</span>}
+            </button>
+          </li>
+        ))}
+      </ul>
+      <div className="list-product">
+        {currentData
+          .filter((item) =>
+            item.gallery.extension
+              .toLowerCase()
+              .includes(inputSearch.toLowerCase())
+          )
+          .sort(sortMethods[filters].method)
+          .map((item) => {
+            return (
+              <div className="product-card" key={item.id}>
+                <div className="img-wrap">
+                  <img src={item.gallery.url} alt="" />
+                </div>
+                <div className="product-card-content">
+                  <div className="product-title">{item.name}</div>
+                  <div className="product-price">
+                    <div className="product-origin-price">
+                      {item.price.toLocaleString()}đ
                     </div>
-                    <div className="product-card-content">
-                      <div className="product-title">{item.name}</div>
-                      <div className="product-price">
-                        <div className="product-origin-price">
-                          {item.price.toLocaleString()}đ
-                        </div>
-                        {item.sale !== 0 ? (
-                          <div className="product-sale-price">
-                            {item.sale.toLocaleString()}đ
-                          </div>
-                        ) : (
-                          ""
-                        )}
+                    {item.sale !== 0 ? (
+                      <div className="product-sale-price">
+                        {item.sale.toLocaleString()}đ
                       </div>
-                      <div onClick={() => handleAdd(item)}>
-                        <AlertAddCart></AlertAddCart>
-                      </div>
-                    </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
-                );
-              })}
-          </div>
-          <div className="navigator">
-            {[...Array(totalOfPages).keys()].map(index => {
-              const page = index + 1
-    
-              return (
-                <button
-                  key={page}
-                  className={index === currentPage - 1 ? 'active' : ''}
-                  id={page}
-                  onClick={handleCurrentPage}
-                >
-                  {page}{' '}
-                </button>
-              )
-            })}
-          </div>
-        </TabPanel>
-        <TabPanel value="2">
-          <div className="list-product">
-            {sort
-              .filter((item) =>
-                item.gallery.extension
-                  .toLowerCase()
-                  .includes(inputSearch.toLowerCase())
-              )
-              .sort(sortMethods[filters].method)
-              .map((item) => {
-                if (item.store_id === 2) {
-                  return (
-                    <div className="product-card" key={item.id}>
-                      <div className="img-wrap">
-                        <img src={item.gallery.url} alt="" />
-                      </div>
-                      <div className="product-card-content">
-                        <div className="product-title">{item.name}</div>
-                        <div className="product-price">
-                          <div className="product-origin-price">
-                            {item.price.toLocaleString()}đ
-                          </div>
-                          {item.sale !== 0 ? (
-                            <div className="product-sale-price">
-                              {item.sale.toLocaleString()}đ
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                        <div onClick={() => handleAdd(item)}>
-                          <AlertAddCart></AlertAddCart>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
-              })}
-          </div>
-      
-        </TabPanel>
-       
-      </TabContext>
-      
-    </Box></>
-
+                  <div onClick={() => handleAdd(item)}>
+                    <AlertAddCart></AlertAddCart>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+      </div>
+      <div className={cx("pagination-pro")}>
+        <Paginator
+          totalRecords={sort.length}
+          pageLimit={pageLimit}
+          pageNeighbours={2}
+          setOffset={setOffset}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          pagePrevText="..."
+          pageNextText="..."
+        />
+      </div>
+    </>
   );
 }

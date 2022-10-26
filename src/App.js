@@ -52,10 +52,11 @@ function App() {
 
   useEffect(() => {
     // Get API
-    fetch(`https://6336bb585327df4c43c83309.mockapi.io/api/v1/${type}`)
+    fetch(`http://shop.thomas-dave.store/api`)
       .then((res) => res.json())
       .then((items) => {
-        setItems(items[0].products);
+        setItems(items.products.data);
+        // console.log(items.products.data);
       })
       .catch((err) => {
         console.log(err.message);

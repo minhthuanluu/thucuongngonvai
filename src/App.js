@@ -59,7 +59,7 @@ function App() {
     // Get API
     const fetchAPI = async () => {
       const result = await pagesServices.pages(cartItems);
-      setItems(result.data);
+      setItems(result);
       setLoading(false);
     };
 

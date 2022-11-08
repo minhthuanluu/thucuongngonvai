@@ -190,7 +190,8 @@ function Cart({
           <div>
             {cartItems.length === 0 && (
               <div style={{ margin: 0, maxWidth: "100% !important" }}>
-                Hiện tại không có sản phẩm nào!!!
+                Hiện tại không có sản phẩm nào!!! <br />
+                Xin vui lòng quay lại shop để mua hàng!!!
               </div>
             )}
           </div>

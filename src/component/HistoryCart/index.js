@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./HistoryCart.module.scss";
 import * as getOrderHistory from "../../api-service/ordersServices";
@@ -10,36 +10,84 @@ function HistoryCart() {
   // console.log(currentTime);
 
   const newListOrder = JSON.parse(localStorage.getItem("ListOrder"));
+  const [orderHistory, setOrderHistory] = useState([]);
+  // const [newOrderHistory, setNewOrderHistory] = useState([]);
 
   const getOrderList = async () => {
     const list = localStorage.getItem("ListOrderID");
     const newList = JSON.parse(list);
     const arrList = [];
     newList?.map((item) => arrList.push(item));
-    // console.log(arrList);
-    // console.log(newListOrder);
     const result = await getOrderHistory.getOrderHistory(arrList);
-    // console.log(result);
+    setOrderHistory(result);
   };
 
-  getOrderList();
+  // const handleDate = () => {
+  //   var groups = {};
+  //   orderHistory.forEach(function (val) {
+  //     var date = val.updated_at.substring(0, 10).split("T")[0];
+  //     if (date in groups) {
+  //       groups[date].push(val);
+  //     } else {
+  //       groups[date] = new Array(val);
+  //     }
+  //   });
 
-  // const listProducts = newListOrder.map((item) => {
-  //   return (
-  //     <dl key={item.id} className={cx("content-flex")}>
-  //       <dd className={cx("content-flex-img")}>
-  //         <img src={item.product_img_url} alt="" />
-  //       </dd>
-  //       <dd className={cx("content-flex-name")}>{item.product_name}</dd>
+  //   // setNewOrderHistory(arrDate);
+  //   // console.log(arrDate);
+  //   // Edit: to add it in the array format instead
 
-  //       <dd className={cx("content-flex-qty")}>{item.qty}</dd>
+  //   setNewOrderHistory(groups);
+  //   return groups;
+  // };
 
-  //       <dd className={cx("content-flex-price")}>
-  //         {item.price.toLocaleString()}đ
-  //       </dd>
-  //     </dl>
-  //   );
-  // });
+  // console.log(newOrderHistory);
+  // const handleListProducts = () => {
+  //   const arrList = handleDate();
+  //   const listProducts = newOrderHistory?.map((items) => console.log(items));
+  //   console.log(arrList);
+  //   items.get_order_items.map((item) => (
+  //     <>
+
+  //       <h3>Ngày đặt hàng: {items.updated_at}</h3>
+  //       <dl key={item.id} className={cx("content-flex")}>
+  //         <dd className={cx("content-flex-img")}>
+  //           <img src={item.product_img_url} alt="" />
+  //         </dd>
+  //         <dd className={cx("content-flex-name")}>{item.product_name}</dd>
+  //         <dd className={cx("content-flex-qty")}>{item.qty}</dd>
+  //         <dd className={cx("content-flex-price")}>
+  //           {item.price.toLocaleString()}đ
+  //         </dd>
+  //       </dl>
+  //     </>
+  //   ))
+  // };
+
+  useEffect(() => {
+    getOrderList();
+    // handleDate();
+    // handleListProducts();
+  }, []);
+
+  const listProducts = orderHistory?.map((items) => {
+    return items.get_order_items.map((item) => {
+      return (
+        <dl key={item.id} className={cx("content-flex")}>
+          <dd className={cx("content-flex-img")}>
+            <img src={item.product_img_url} alt="" />
+          </dd>
+          <dd className={cx("content-flex-name")}>{item.product_name}</dd>
+
+          <dd className={cx("content-flex-qty")}>{item.qty}</dd>
+
+          <dd className={cx("content-flex-price")}>
+            {item.price.toLocaleString()}đ
+          </dd>
+        </dl>
+      );
+    });
+  });
 
   return (
     <>
@@ -67,7 +115,7 @@ function HistoryCart() {
                     <dt>Giá tiền</dt>
                   </dl>
 
-                  {/* {listProducts} */}
+                  {listProducts}
                 </div>
               </div>
             </div>

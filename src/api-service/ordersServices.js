@@ -13,18 +13,24 @@ export const createOrder = async (dataUser) => {
 
 // Get API history
 export const getOrderHistory = async (order_ids) => {
-  // const data = { order_ids: [491, 492, 493] };
-  var order_ids = [1];
   try {
-    const res = await request.get(`/order/history`, {
-      params: {
-        order_ids,
-      },
-    });
-    console.log(res);
-    return res;
+    // console.log(order_ids);
+    // const res = await request.get(`/order/history`, {
+    //   data: ["495", "496"],
+    // });
+    // console.log(res);
+
+    const { data } = await axios.get(
+      "https://shop.thomas-dave.store/api/order/history",
+      {
+        params: {
+          order_ids,
+        },
+      }
+    );
+
+    return data.orders.data;
   } catch (error) {
-    console.log(error.response);
     return error;
   }
 };

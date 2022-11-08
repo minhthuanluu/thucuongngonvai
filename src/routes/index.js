@@ -5,7 +5,7 @@ import SecondLayout from "../layout/SecondLayout";
 
 const publicRoutes = [
   {
-    path: "/",
+    path: "/thucuongngonvai",
     component: Home,
     layout: FirstLayout,
   },

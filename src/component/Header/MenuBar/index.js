@@ -9,7 +9,7 @@ function MenuBar() {
           id="menu-item-1271"
           className="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-1262 current_page_item menu-item-1271"
         >
-          <Link to="/" aria-current="page">
+          <Link to="/thucuongngonvai" aria-current="page">
             Trang chủ
           </Link>
         </li>

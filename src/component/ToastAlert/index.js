@@ -1,5 +1,5 @@
 import React from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const AlertAddCart = () => {
@@ -19,7 +19,6 @@ export const AlertAddCart = () => {
       <button onClick={notify} className="button-type-one btn-order-product">
         Thêm Giỏ Hàng
       </button>
-      <ToastContainer />
     </>
   );
 };

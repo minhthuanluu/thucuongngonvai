@@ -1,15 +1,19 @@
 import Home from "../page/Home";
-import Admin from "../page/Admin";
+import Login from "../page/Login";
 import FirstLayout from "../layout/FirstLayout";
 import SecondLayout from "../layout/SecondLayout";
 
 const publicRoutes = [
-    {
-        path: '/', component: Home, layout: FirstLayout,
-    },
-    {
-        path: '/admin', component: Admin, layout: SecondLayout,
-    }
-]
+  {
+    path: "/",
+    component: Home,
+    layout: FirstLayout,
+  },
+  {
+    path: "/login",
+    component: Login,
+    layout: SecondLayout,
+  },
+];
 
-export { publicRoutes }
+export { publicRoutes };

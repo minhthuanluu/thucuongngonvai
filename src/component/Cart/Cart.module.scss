@@ -133,6 +133,8 @@ select, input{
             max-width: 100% !important;
             .content-scroll{
                 max-width: 100% !important;
+                height: 500px;
+                overflow-y: auto;
             }
         }
     }

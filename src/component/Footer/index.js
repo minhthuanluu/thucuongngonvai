@@ -4,7 +4,8 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/animations/scale-extreme.css";
 import images from "../../assets/images";
-import ModalPopUp from "../ModalPopUp";
+import Cart from "../Cart";
+import HistoryCart from "../HistoryCart";
 import classnames from "classnames/bind";
 import style from "./Footer.module.scss";
 
@@ -14,15 +15,20 @@ function Footer({
   cartItems,
   handleAdd,
   handleRemove,
-  handleChange,
+  handleDeleted,
   handleClear,
-  countItemsCart,
 }) {
-  const [show, setShow] = useState(false);
+  const [showCart, setShowCart] = useState(false);
+  const [showHistoryCart, setShowHistoryCart] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  // const [cartItem, setCartItem] = useState(cartItems);
 
-  const handleModalPopUp = () => {
-    setShow(!show);
+  const handleCart = () => {
+    setShowCart(!showCart);
+  };
+
+  const handleHistoryCart = () => {
+    setShowHistoryCart(!showHistoryCart);
   };
 
   const handleShowMenu = () => {
@@ -46,13 +52,14 @@ function Footer({
           </a>
         </Tippy>
 
+        {/* Giỏ hàng */}
         <Tippy content="Giỏ Hàng" animation="scale-extreme" delay={(0, 0)}>
           <a
-            onClick={() => handleModalPopUp()}
+            onClick={() => handleCart()}
             className={cx(
               "btn-cart",
               showMenu ? "show-menu-cart" : "",
-              show ? "active" : ""
+              showCart ? "active" : ""
             )}
           >
             <img src={images.imgcart} alt="" />
@@ -64,34 +71,54 @@ function Footer({
           </a>
         </Tippy>
 
+        <div className={cx("popup-over", showCart ? "show-cart" : "")}>
+          <Popup
+            visible={showCart}
+            animationDuration="500"
+            onClose={() => setShowCart(false)}
+          >
+            <a onClick={() => handleCart()}>x</a>
+            <Cart
+              cartItems={cartItems}
+              handleAdd={handleAdd}
+              handleRemove={handleRemove}
+              handleDeleted={handleDeleted}
+              handleClear={handleClear}
+            ></Cart>
+          </Popup>
+        </div>
+
+        {/* Lịch sử đơn hàng */}
         <Tippy
           content="Lịch Sử Đơn Hàng"
           animation="scale-extreme"
           delay={(0, 0)}
         >
           <a
-            // onClick={() => handleModalPopUp()}
-            className={cx("btn-history", showMenu ? "show-menu-history" : "")}
+            onClick={() => handleHistoryCart()}
+            className={cx(
+              "btn-history",
+              showMenu ? "show-menu-history" : "",
+              showHistoryCart ? "active" : ""
+            )}
           >
             <img src={images.imghistory} alt="" />
           </a>
         </Tippy>
 
-        <div className={cx("popup-over", show ? "show" : "")}>
+        <div
+          className={cx(
+            "popup-over",
+            showHistoryCart ? "show-history-cart" : ""
+          )}
+        >
           <Popup
-            visible={show}
+            visible={showHistoryCart}
             animationDuration="500"
-            onClose={() => setShow(false)}
+            onClose={() => setShowHistoryCart(false)}
           >
-            <a onClick={() => handleModalPopUp()}>x</a>
-            <ModalPopUp
-              cartItems={cartItems}
-              handleAdd={handleAdd}
-              handleRemove={handleRemove}
-              handleChange={handleChange}
-              handleClear={handleClear}
-              countItemsCart={countItemsCart}
-            ></ModalPopUp>
+            <a onClick={() => handleHistoryCart()}>x</a>
+            <HistoryCart></HistoryCart>
           </Popup>
         </div>
 

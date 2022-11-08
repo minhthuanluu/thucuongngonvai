@@ -17,10 +17,8 @@ function DefaultLayout({
   cartItems,
   handleAdd,
   handleRemove,
+  handleDeleted,
   handleClear,
-  tabs,
-  setType,
-  type,
 }) {
   return (
     <div className={cx("page-over")}>
@@ -42,14 +40,7 @@ function DefaultLayout({
               path={route.path}
               element={
                 <Layout>
-                  <Page
-                    loading={loading}
-                    items={items}
-                    handleAdd={handleAdd}
-                    tabs={tabs}
-                    setType={setType}
-                    type={type}
-                  />
+                  <Page loading={loading} items={items} handleAdd={handleAdd} />
                 </Layout>
               }
             ></Route>
@@ -60,6 +51,7 @@ function DefaultLayout({
         cartItems={cartItems}
         handleAdd={handleAdd}
         handleRemove={handleRemove}
+        handleDeleted={handleDeleted}
         handleClear={handleClear}
       ></Footer>
     </div>

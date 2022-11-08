@@ -117,6 +117,7 @@
   width: 100%;
   z-index: 99;
   padding: 12px 0;
+  background: rgb(0 0 0 / 30%);
 }
 
 #header-wrap.scroll-header {

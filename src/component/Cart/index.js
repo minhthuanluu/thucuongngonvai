@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import QRCode from "qrcode.react";
 import classNames from "classnames/bind";
-import styles from "./ModalPopUp.module.scss";
+import styles from "./Cart.module.scss";
 import { AlertCheckOut } from "../ToastAlert";
 import Button from "../Button";
 import images from "../../assets/images";
+import * as createOrder from "../../api-service/ordersServices";
 
 const cx = classNames.bind(styles);
 
@@ -22,46 +23,136 @@ const payLoad = [
   },
 ];
 
-function ModalPopUp({ cartItems, handleAdd, handleRemove, handleClear }) {
+function Cart({
+  cartItems,
+  handleAdd,
+  handleRemove,
+  handleDeleted,
+  handleClear,
+}) {
   const [isChecked, setIsChecked] = useState(1);
-  const [user, setUser] = useState("");
-  const [phone, setPhone] = useState("");
-  const [info, setInfo] = useState(() => {
-    const newUsers = JSON.parse(localStorage.getItem("info"));
-    return newUsers ?? [];
+  const [customer_name, setCustomer_name] = useState("");
+  const [customer_phone, setCustomer_phone] = useState("");
+  const [infoCustomer, setInfoCustomer] = useState(() => {
+    const newCustomer = JSON.parse(localStorage.getItem("ListInfoCustomer"));
+    return newCustomer ?? [];
+  });
+
+  const [orderList, setOrderList] = useState(() => {
+    const newOrderList = JSON.parse(localStorage.getItem("ListOrder"));
+    return newOrderList ?? [];
+  });
+
+  const [orderListID, setOrderListID] = useState(() => {
+    const newOrderListID = JSON.parse(localStorage.getItem("ListOrderID"));
+    return newOrderListID ?? [];
   });
 
   const ref = useRef();
-  const enabledButton = user.length >= 2 && phone.length >= 10;
+  const enabledButton =
+    customer_name.length >= 2 && customer_phone.length >= 10;
 
-  // Thêm thông tin khách hàng
-  const handleSubmitInfo = () => {
-    setInfo((prev) => {
-      const listInfo = [
+  // Thêm thông tin và sản phẩm của khách hàng
+  const handleSubmit = async (
+    total_payment,
+    customer_name,
+    customer_phone,
+    client_ip,
+    order_note,
+    order_items
+  ) => {
+    setInfoCustomer((prev) => {
+      const listInfoCustomer = [
         ...prev,
         {
-          name: user.replace(/ +(?= )/g, "").trim(),
-          phone: phone,
+          customer_name: customer_name.replace(/ +(?= )/g, "").trim(),
+          customer_phone: customer_phone,
           payload:
             isChecked === 1
               ? "Thanh toán bàng Momo"
               : "Thanh toán bằng tiền mặt",
         },
       ];
-      localStorage.setItem("info", JSON.stringify(listInfo));
-      localStorage.setItem("cart", JSON.stringify(cartItems));
-      return listInfo;
+      localStorage.setItem(
+        "ListInfoCustomer",
+        JSON.stringify(listInfoCustomer)
+      );
+      return listInfoCustomer;
     });
-    setUser("");
-    setPhone("");
+
+    setOrderList((prev) => {
+      const oldOrderList = [...prev];
+      const currentOrderList = orderItems;
+      const listOrder = oldOrderList.concat(currentOrderList);
+      localStorage.setItem("ListOrder", JSON.stringify(listOrder));
+      return listOrder;
+    });
+
+    const orderItems = handleProductsList(order_items);
+    const params = {
+      total_payment,
+      customer_name,
+      customer_phone,
+      client_ip,
+      order_note,
+      order_items: orderItems,
+    };
+    setOrderListID(async (prev) => {
+      const oldID = [...prev];
+      const currentID = await createOrder.createOrder(params); // GET order_ids
+      const listOrderID = oldID.concat(currentID.orderId);
+      localStorage.setItem("ListOrderID", JSON.stringify(listOrderID));
+      return listOrderID;
+    });
+
+    try {
+      setInfoCustomer();
+      setOrderList();
+    } catch (error) {
+      console.log(error);
+    }
+
+    handleClear();
+    setCustomer_name("");
+    setCustomer_phone("");
     ref.current.focus();
+  };
+
+  // Xử lý thêm các params trong API order/create
+  const handleProductsList = (order_items) => {
+    const arrOrder = [];
+    for (let index = 0; index < order_items.length; index++) {
+      const element = order_items[index];
+      const qty = element.qty;
+      const price = element.price;
+      const product_name = element.name;
+      const product_img_url = element.get_image.url;
+      const order_item_note = element.description;
+      arrOrder.push({
+        qty,
+        price,
+        product_name,
+        product_img_url,
+        order_item_note,
+      });
+    }
+
+    return arrOrder;
   };
 
   // Chức năng giúp input chỉ được nhập số
   const handleChangeNumber = (e) => {
     const rex = /^[0-9\b]+$/; //rules
     if (e.target.value === "" || rex.test(e.target.value)) {
-      setPhone(e.target.value);
+      setCustomer_phone(e.target.value);
+    }
+  };
+
+  // Chức năng giúp input chỉ được nhập chữ
+  const handleChangeUser = (e) => {
+    const rex = /^[a-zA-Z\s\W]+$/; //rules
+    if (e.target.value === "" || rex.test(e.target.value)) {
+      setCustomer_name(e.target.value);
     }
   };
 
@@ -69,7 +160,7 @@ function ModalPopUp({ cartItems, handleAdd, handleRemove, handleClear }) {
     return (
       <dl key={item.id} className={cx("content-flex")}>
         <dd className={cx("content-flex-img")}>
-          <img src={item.gallery.url} alt="" />
+          <img src={item.get_image.url} alt="" />
         </dd>
         <dd className={cx("content-flex-name")}>{item.name}</dd>
 
@@ -84,7 +175,7 @@ function ModalPopUp({ cartItems, handleAdd, handleRemove, handleClear }) {
         </dd>
 
         <dd className={cx("content-flex-del")}>
-          <button onClick={() => handleClear(item.id)}>Xóa</button>
+          <button onClick={() => handleDeleted(item.id)}>Xóa</button>
         </dd>
       </dl>
     );
@@ -142,8 +233,8 @@ function ModalPopUp({ cartItems, handleAdd, handleRemove, handleClear }) {
                   <input
                     type="text"
                     ref={ref}
-                    value={user}
-                    onChange={(e) => setUser(e.target.value)}
+                    value={customer_name}
+                    onChange={handleChangeUser}
                   />
                 </p>
                 <p>
@@ -151,7 +242,7 @@ function ModalPopUp({ cartItems, handleAdd, handleRemove, handleClear }) {
                   <input
                     type="text"
                     maxLength="11"
-                    value={phone}
+                    value={customer_phone}
                     onChange={handleChangeNumber}
                   />
                 </p>
@@ -190,7 +281,7 @@ function ModalPopUp({ cartItems, handleAdd, handleRemove, handleClear }) {
                         <>
                           <QRCode
                             id="qrcode"
-                            value={user + phone}
+                            value={customer_name + customer_phone}
                             size={100}
                             level="H"
                           />
@@ -210,7 +301,16 @@ function ModalPopUp({ cartItems, handleAdd, handleRemove, handleClear }) {
                 elementdiv="true"
                 disabled
                 enabledButton={enabledButton}
-                onClick={() => handleSubmitInfo()}
+                onClick={() =>
+                  handleSubmit(
+                    totalPrice,
+                    customer_name,
+                    customer_phone,
+                    "192.168.1.1",
+                    "Khong co gi",
+                    cartItems
+                  )
+                }
               >
                 <AlertCheckOut enabledButton={enabledButton}></AlertCheckOut>
               </Button>
@@ -222,4 +322,4 @@ function ModalPopUp({ cartItems, handleAdd, handleRemove, handleClear }) {
   );
 }
 
-export default ModalPopUp;
+export default Cart;

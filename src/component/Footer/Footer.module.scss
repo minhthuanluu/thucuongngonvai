@@ -51,7 +51,13 @@
     }
 }
 
-.show{
+.show-cart{
+    z-index: 10;
+    background: rgb(0 0 0 / 50%);
+    opacity: 1;
+}
+
+.show-history-cart{
     z-index: 10;
     background: rgb(0 0 0 / 50%);
     opacity: 1;

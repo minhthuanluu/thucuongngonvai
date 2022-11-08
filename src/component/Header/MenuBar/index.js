@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 function MenuBar() {
   return (
@@ -17,7 +17,7 @@ function MenuBar() {
           id="menu-item-1551"
           className="menu-item menu-item-type-custom menu-item-object-custom menu-item-1551"
         >
-          <Link to="/admin">Admin</Link>
+          <Link to="/login">Đăng nhập</Link>
         </li>
       </ul>
     </>

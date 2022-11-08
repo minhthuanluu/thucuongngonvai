@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
-// import classNames from "classnames/bind";
-// import styles from "./Product.module.scss";
+import classNames from "classnames/bind";
+import styles from "./Product.module.scss";
 import images from "../../assets/images";
 
-import CategoryTabs from "../Category";
+import { AlertAddCart } from "../ToastAlert";
+import { ToastContainer } from "react-toastify";
 
-// const cx = classNames.bind(styles);
+import Paginator from "react-hooks-paginator";
+import * as pagesServices from "../../api-service/pagesServices";
 
-function Product({ loading, items, handleAdd, tabs, setType, type }) {
+const cx = classNames.bind(styles);
+
+function Product({ loading, items, handleAdd }) {
   const [sort, setSort] = useState(items);
   const [inputSearch, setInputSearch] = useState("");
   const [filters, setFilters] = useState("default");
   const [filterSearchProduct, setFilterSearchProduct] = useState(sort);
+
+  const [offset, setOffset] = useState(0);
+  const currentPage = 1;
 
   // Xử lý tìm kiếm sản phẩm
   const handleSearchProducts = (e) => {
@@ -19,9 +26,7 @@ function Product({ loading, items, handleAdd, tabs, setType, type }) {
     let updatedProducts = sort;
     if (e.target.value) {
       updatedProducts = sort.filter((item) =>
-        item.gallery.extension
-          .toLowerCase()
-          .includes(e.target.value.toLowerCase())
+        item.name.toLowerCase().includes(e.target.value.toLowerCase())
       );
     }
     setFilterSearchProduct(updatedProducts);
@@ -34,14 +39,13 @@ function Product({ loading, items, handleAdd, tabs, setType, type }) {
     descending: { method: (a, b) => b.price - a.price }, // Chọn giá giảm dần
   };
 
-  useEffect(() => {
-    const init = () => {
-      if (items) {
-        setSort(items);
-      }
-    };
-    init();
-  }, [items]); // Items được gán giá trị khi component Mount
+  // Xử lý Phân Trang cho sản phẩm
+  const handleChangePage = async (currentPage) => {
+    const result = await pagesServices.pages(currentPage);
+    setSort(result.data);
+  };
+
+  useEffect(() => {}, [items]); // Items được gán giá trị khi component Mount
 
   return (
     <>
@@ -96,7 +100,7 @@ function Product({ loading, items, handleAdd, tabs, setType, type }) {
           </div>
 
           {/* Category từng sản phẩm */}
-          <CategoryTabs
+          {/* <CategoryTabs
             sort={sort}
             sortMethods={sortMethods}
             filters={filters}
@@ -104,8 +108,49 @@ function Product({ loading, items, handleAdd, tabs, setType, type }) {
             handleAdd={handleAdd}
             tabs={tabs}
             setType={setType}
+            // onChangePage={(storeId,currentPage)=>callAPI(currentPage)}
             type={type}
-          ></CategoryTabs>
+          ></CategoryTabs> */}
+
+          <div className="list-product">
+            {sort
+              .filter((item) =>
+                item.name.toLowerCase().includes(inputSearch.toLowerCase())
+              )
+              .sort(sortMethods[filters].method)
+              .map((item) => (
+                <div className="product-card" key={item.id}>
+                  <div className="img-wrap">
+                    <img src={item.get_image.url} alt="" />
+                  </div>
+                  <div className="product-card-content">
+                    <div className="product-title">{item.name}</div>
+                    <div className="product-price">
+                      <div className="product-origin-price">
+                        {item.price.toLocaleString()}đ
+                      </div>
+                    </div>
+                    <div onClick={() => handleAdd(item)}>
+                      <AlertAddCart></AlertAddCart>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+          <ToastContainer />
+
+          <div className={cx("pagination-pro")}>
+            <Paginator
+              totalRecords={sort.length}
+              pageLimit={5}
+              pageNeighbours={2}
+              setOffset={setOffset}
+              currentPage={currentPage}
+              setCurrentPage={handleChangePage}
+              pagePrevText="..."
+              pageNextText="..."
+            />
+          </div>
         </>
       )}
     </>

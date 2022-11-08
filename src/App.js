@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
-
 import "bootstrap/dist/css/bootstrap.min.css";
-
 import "./assets/css/common.css";
 import "./assets/css/home.css";
 import DefaultLayout from "./layout/DefaultLayout";
+import * as pagesServices from "./api-service/pagesServices";
 
-const tabs = ["banam", "basau"];
 function App() {
-  // const [size, setSize] = useState("");
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
-  const [type, setType] = useState("banam");
   const [cartItems, setCartItems] = useState(() => {
-    const cartFromLocalStore = JSON.parse(localStorage.getItem("cart"));
-    return cartFromLocalStore ?? [];
+    const newItems = JSON.parse(localStorage.getItem("cart"));
+    return newItems ?? [];
   });
 
   // Tăng số lượng Item
@@ -46,28 +42,29 @@ function App() {
   };
 
   // Xóa từng Item trong Cart
-  const handleClear = (product_id) => {
+  const handleDeleted = (product_id) => {
     setCartItems(cartItems.filter((item) => item.id !== product_id));
+  };
+
+  // Xóa toàn bộ Item trong Cart
+  const handleClear = (product_id) => {
+    setCartItems(
+      cartItems.filter(
+        (item) => item.id === product_id && item.id !== product_id
+      )
+    );
   };
 
   useEffect(() => {
     // Get API
-    fetch(`http://shop.thomas-dave.store/api`)
-      .then((res) => res.json())
-      .then((items) => {
-        setItems(items.products.data);
-        // console.log(items.products.data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    const fetchAPI = async () => {
+      const result = await pagesServices.pages(cartItems);
+      setItems(result.data);
+      setLoading(false);
+    };
 
-    // Tạo Cart trong localStore để lưu Item
-    // localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems, type]); // cartItems -> Sau mỗi lần thêm Item thì cập nhập lại initialStateValue
+    fetchAPI();
+  }, [cartItems]); // cartItems -> Sau mỗi lần thêm Item thì cập nhập lại initialStateValue
 
   return (
     <>
@@ -77,10 +74,8 @@ function App() {
         cartItems={cartItems}
         handleAdd={handleAdd}
         handleRemove={handleRemove}
+        handleDeleted={handleDeleted}
         handleClear={handleClear}
-        tabs={tabs}
-        setType={setType}
-        type={type}
       ></DefaultLayout>
     </>
   );

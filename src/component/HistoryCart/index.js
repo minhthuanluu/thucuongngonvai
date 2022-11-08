@@ -71,13 +71,19 @@ function HistoryCart() {
   }, []);
 
   const listProducts = orderHistory?.map((items) => {
+    console.log(items);
     return items.get_order_items.map((item) => {
       return (
         <dl key={item.id} className={cx("content-flex")}>
           <dd className={cx("content-flex-img")}>
             <img src={item.product_img_url} alt="" />
           </dd>
-          <dd className={cx("content-flex-name")}>{item.product_name}</dd>
+          <dd className={cx("content-flex-name")}>
+            {item.product_name}
+            <br />
+            <hr></hr>
+            <h6>Ngày mua: {items.order_date}</h6>
+          </dd>
 
           <dd className={cx("content-flex-qty")}>{item.qty}</dd>
 

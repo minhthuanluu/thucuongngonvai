@@ -14,6 +14,7 @@ import * as categoryServices from "../../api-service/categoryServices";
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
+import Tabs from "@mui/material/Tabs";
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
@@ -29,6 +30,7 @@ function Product({ loading, items, handleAdd }) {
 
   const [offset, setOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+
 
   // Xử lý tìm kiếm sản phẩm
   const handleSearchProducts = (e) => {
@@ -49,20 +51,24 @@ function Product({ loading, items, handleAdd }) {
     descending: { method: (a, b) => b.price - a.price }, // Chọn giá giảm dần
   };
 
-  // Xử lý Phân Trang cho sản phẩm
-  const handleChangePage = async (currentPage) => {
-    const result = await pagesServices.pages(currentPage);
-    setSortItem(result.data);
-    setCurrentPage(result.current_page)
-  };
-
   const [categoryID, setCategoryID] = useState(1)
-
-  const handleChangeCateId = async (event, newValue) => {
-    const result = await categoryServices.category(newValue)
-    setCategoryID(result.data);
-    console.log(result.data)
+  // Xử lý Phân Trang cho sản phẩm
+  const handleChangePage = async (e, cate_ID, currentPage) => {
+    const result = await pagesServices.pages(e, cate_ID, currentPage);
+    // console.log(newValue);
+    console.log(result?.data);
+    setCategoryID(result?.data);
+    setSortItem(result?.data);
+    setCurrentPage(result.current_page);
   };
+
+  // console.log(categoryID);
+
+  // const handleChangeCateId = async (event, newValue) => {
+  //   const result = await categoryServices.category(newValue)
+  //   setCategoryID(result.data);
+  //   console.log(result.data)
+  // };
 
   useEffect(() => { }, [items]); // Items được gán giá trị khi component Mount
 
@@ -121,13 +127,15 @@ function Product({ loading, items, handleAdd }) {
           <Box sx={{ width: '100%', typography: 'body1' }}>
             <TabContext value={categoryID}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <TabList onChange={handleChangeCateId} aria-label="lab API tabs example">
+                <Tabs onChange={handleChangePage}>
                   <Tab label="Item One" value={1} />
                   <Tab label="Item Two" value={2} />
                   <Tab label="Item Three" value={3} />
-                </TabList>
+                </Tabs>
               </Box>
-              <TabPanel value={1}>Item One</TabPanel>
+              <TabPanel value={1}>
+                Item One
+              </TabPanel>
               <TabPanel value={2}>Item Two</TabPanel>
               <TabPanel value={3}>Item Three</TabPanel>
             </TabContext>
@@ -147,7 +155,7 @@ function Product({ loading, items, handleAdd }) {
                     <div className="product-title">{item.name}</div>
                     <div className="product-price">
                       <div className="product-origin-price">
-                        {item.price.toLocaleString()}đ
+                        {/* {item.price.toLocaleString()}đ */}
                       </div>
                     </div>
                     <div onClick={() => handleAdd(item)}>

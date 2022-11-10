@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/thucuongngonvai/static/css/main.06907833.css",
-    "main.js": "/thucuongngonvai/static/js/main.4e63cb06.js",
+    "main.css": "/thucuongngonvai/static/css/main.03c17f1c.css",
+    "main.js": "/thucuongngonvai/static/js/main.6b91cc1d.js",
     "static/js/787.389c58d8.chunk.js": "/thucuongngonvai/static/js/787.389c58d8.chunk.js",
     "static/media/banner3.jpg": "/thucuongngonvai/static/media/banner3.f25ce14769b29a3f9f9d.jpg",
     "static/media/banner1.jpg": "/thucuongngonvai/static/media/banner1.e5fd9ec77670724c5f30.jpg",
@@ -13,18 +13,20 @@
     "static/media/img_cart.png": "/thucuongngonvai/static/media/img_cart.5ae8468cf590c1ac0ee4.png",
     "static/media/img_history.png": "/thucuongngonvai/static/media/img_history.6d2c77402da3d0381195.png",
     "static/media/button_delivery.webp": "/thucuongngonvai/static/media/button_delivery.af0633bd6c516d1664d6.webp",
+    "static/media/united-kingdom.svg": "/thucuongngonvai/static/media/united-kingdom.4839cec4896b3141f334c06fe07d863c.svg",
     "static/media/slick.svg": "/thucuongngonvai/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/thucuongngonvai/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/thucuongngonvai/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/thucuongngonvai/static/media/slick.295183786cd8a1389865.woff",
+    "static/media/vietnam.svg": "/thucuongngonvai/static/media/vietnam.5e8684f5244061aeb6f83dfb2a1e6f8c.svg",
     "index.html": "/thucuongngonvai/index.html",
     "static/media/ic_scoll.webp": "/thucuongngonvai/static/media/ic_scoll.6c9306948c5c8c92e303.webp",
-    "main.06907833.css.map": "/thucuongngonvai/static/css/main.06907833.css.map",
-    "main.4e63cb06.js.map": "/thucuongngonvai/static/js/main.4e63cb06.js.map",
+    "main.03c17f1c.css.map": "/thucuongngonvai/static/css/main.03c17f1c.css.map",
+    "main.6b91cc1d.js.map": "/thucuongngonvai/static/js/main.6b91cc1d.js.map",
     "787.389c58d8.chunk.js.map": "/thucuongngonvai/static/js/787.389c58d8.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.06907833.css",
-    "static/js/main.4e63cb06.js"
+    "static/css/main.03c17f1c.css",
+    "static/js/main.6b91cc1d.js"
   ]
 }

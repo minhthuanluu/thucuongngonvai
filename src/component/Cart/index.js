@@ -1,27 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import QRCode from "qrcode.react";
 import classNames from "classnames/bind";
 import styles from "./Cart.module.scss";
 import { AlertCheckOut } from "../ToastAlert";
 import Button from "../Button";
-import images from "../../assets/images";
+// import images from "../../assets/images";
 import * as createOrder from "../../api-service/ordersServices";
+import * as createUserMethods from "../../api-service/paymentmethodsServices";
 
 const cx = classNames.bind(styles);
-
-const payLoad = [
-  {
-    id: 1,
-    name: "MoMo",
-    content: images.qrmomo,
-  },
-  {
-    id: 2,
-    name: "Tiền Mặt",
-    content:
-      "Xin hãy đến gặp Thống và trả tiền 💲 cho anh ấy. Nếu không bạn sẽ bị mất ngón tay 🔪. Xin chân thành cám ơn 🤟.",
-  },
-];
 
 function Cart({
   cartItems,
@@ -30,9 +18,11 @@ function Cart({
   handleDeleted,
   handleClear,
 }) {
+  const { t } = useTranslation()
   const [isChecked, setIsChecked] = useState(1);
   const [customer_name, setCustomer_name] = useState("");
   const [customer_phone, setCustomer_phone] = useState("");
+  const [paymentMethods, setPaymentMethods] = useState([])
   const [infoCustomer, setInfoCustomer] = useState(() => {
     const newCustomer = JSON.parse(localStorage.getItem("ListInfoCustomer"));
     return newCustomer ?? [];
@@ -49,6 +39,7 @@ function Cart({
   });
 
   const ref = useRef();
+  // Xử lý điều kiện khi input nhập không đủ ký tự và số
   const enabledButton =
     customer_name.length >= 2 && customer_phone.length >= 10;
 
@@ -70,7 +61,7 @@ function Cart({
           payload:
             isChecked === 1
               ? "Thanh toán bàng Momo"
-              : "Thanh toán bằng tiền mặt",
+              : "Thanh toán bằng Cash",
         },
       ];
       localStorage.setItem(
@@ -88,6 +79,7 @@ function Cart({
       return listOrder;
     });
 
+    // Thêm các params vào order create
     const orderItems = handleProductsList(order_items);
     const params = {
       total_payment,
@@ -95,8 +87,10 @@ function Cart({
       customer_phone,
       client_ip,
       order_note,
+      payment_method_id: isChecked,
       order_items: orderItems,
     };
+
     setOrderListID(async (prev) => {
       const oldID = [...prev];
       const currentID = await createOrder.createOrder(params); // GET order_ids
@@ -118,6 +112,16 @@ function Cart({
     ref.current.focus();
   };
 
+  const getPaymentMethods = async () => {
+    const getUserMethods = await createUserMethods.createUserMethods()
+    setPaymentMethods(getUserMethods);
+    return getUserMethods
+  }
+
+  useEffect(() => {
+    getPaymentMethods();
+  }, [])
+
   // Xử lý thêm các params trong API order/create
   const handleProductsList = (order_items) => {
     const arrOrder = [];
@@ -136,7 +140,6 @@ function Cart({
         order_item_note,
       });
     }
-
     return arrOrder;
   };
 
@@ -175,13 +178,15 @@ function Cart({
         </dd>
 
         <dd className={cx("content-flex-del")}>
-          <button onClick={() => handleDeleted(item.id)}>Xóa</button>
+          <button onClick={() => handleDeleted(item.id)}>{t('homepage.deletedItem')}</button>
         </dd>
       </dl>
     );
   });
 
+  // Tổng tiền
   const totalPrice = cartItems.reduce((a, c) => a + c.price * c.qty, 0);
+
 
   return (
     <>
@@ -190,8 +195,7 @@ function Cart({
           <div>
             {cartItems.length === 0 && (
               <div style={{ margin: 0, maxWidth: "100% !important" }}>
-                Hiện tại không có sản phẩm nào!!! <br />
-                Xin vui lòng quay lại shop để mua hàng!!!
+                {t('homepage.emptyItem')}
               </div>
             )}
           </div>
@@ -199,16 +203,16 @@ function Cart({
           <>
             <div className={cx("left-info")}>
               <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-                Thông tin sản phẩm
+                {t('homepage.infoItem')}
               </h2>
               <div className={cx("content-width")}>
                 <div className={cx("content-scroll")}>
                   <dl className={cx("content-flex")}>
-                    <dt>Hình ảnh</dt>
-                    <dt>Sản phẩm</dt>
-                    <dt>Số lượng</dt>
-                    <dt>Giá tiền</dt>
-                    <dt>Xóa</dt>
+                    <dt>{t('homepage.imageItem')}</dt>
+                    <dt>{t('homepage.nameItem')}</dt>
+                    <dt>{t('homepage.qtyItem')}</dt>
+                    <dt>{t('homepage.priceItem')}</dt>
+                    <dt>{t('homepage.deletedItem')}</dt>
                   </dl>
 
                   {listProducts}
@@ -216,7 +220,7 @@ function Cart({
                   {cartItems.length !== 0 && (
                     <>
                       <dl className={cx("content-flex", "last-info")}>
-                        <dd>Tổng giá trị</dd>
+                        <dd>{t('homepage.totalPayment')}</dd>
                         <dd>{totalPrice.toLocaleString()}đ</dd>
                       </dl>
                     </>
@@ -226,11 +230,11 @@ function Cart({
             </div>
             <div className={cx("right-info")}>
               <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-                Thêm thông tin cá nhân
+                {t('homepage.addPeronalInfo')}
               </h2>
               <div className={cx("info-user")}>
                 <p>
-                  <span>Tên:</span>
+                  <span>{t('homepage.nameCustomer')}:</span>
                   <input
                     type="text"
                     ref={ref}
@@ -239,7 +243,7 @@ function Cart({
                   />
                 </p>
                 <p>
-                  <span>Điện thoại:</span>
+                  <span>{t('homepage.phoneCustomer')}:</span>
                   <input
                     type="text"
                     maxLength="11"
@@ -250,9 +254,9 @@ function Cart({
               </div>
 
               <div className={cx("info-payload")}>
-                <h5>Hình thức thanh toán</h5>
+                <h5>{t('homepage.paymentMethod')}</h5>
                 <div>
-                  {payLoad.map((pay) => (
+                  {paymentMethods.map((pay) => (
                     <>
                       <label key={pay.id}>
                         <input
@@ -268,7 +272,7 @@ function Cart({
                 </div>
 
                 <ul>
-                  {payLoad.map((pay) => (
+                  {paymentMethods.map((pay) => (
                     <li
                       key={pay.id}
                       style={
@@ -287,10 +291,10 @@ function Cart({
                             level="H"
                           />
                           <h5>{totalPrice.toLocaleString()} VND</h5>
-                          <p>Vui lòng thanh toán trước khi đặt hàng</p>
+                          <p>{t('homepage.notePay')}</p>
                         </>
                       ) : (
-                        <h6>{pay.content}</h6>
+                        <h6>{pay.note}</h6>
                       )}
                     </li>
                   ))}

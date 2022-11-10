@@ -97,6 +97,23 @@
   font-weight: 700;
 }
 
+.menu-primary .menu-item button{
+  border: none;
+  background: rgb(255 255 255 / 30%);
+}
+
+.menu-primary .menu-item button:hover{
+  opacity: 0.5;
+}
+
+.menu-primary .menu-item button img{
+  width: 20px;
+}
+
+.menu-primary .menu-item:last-of-type{
+  margin-right: 0;
+}
+
 .menu-primary .menu-item a {
   font-family: Muli;
 }
@@ -113,9 +130,11 @@
 }
 
 #header-wrap {
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  z-index: 99;
+  z-index: 9;
   padding: 12px 0;
   background: rgb(0 0 0 / 30%);
 }

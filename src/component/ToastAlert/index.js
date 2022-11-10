@@ -1,10 +1,12 @@
 import React from "react";
 import { toast } from "react-toastify";
+import { useTranslation } from 'react-i18next';
 import "react-toastify/dist/ReactToastify.css";
 
 export const AlertAddCart = () => {
+  const { t } = useTranslation()
   const notify = () =>
-    toast.success("Bạn đã thêm vào giỏ hàng!", {
+    toast.success(t('homepage.addCartSuccess'), {
       position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
@@ -17,15 +19,16 @@ export const AlertAddCart = () => {
   return (
     <>
       <button onClick={notify} className="button-type-one btn-order-product">
-        Thêm Giỏ Hàng
+      {t('homepage.addCart')}
       </button>
     </>
   );
 };
 
 export const AlertCheckOut = ({ enabledButton }) => {
+  const { t } = useTranslation()
   const notify = () =>
-    toast.success("Bạn đã đặt hàng thành công!", {
+    toast.success(t('homepage.paymentSuccess'), {
       position: "top-center",
       autoClose: 1500,
       hideProgressBar: false,
@@ -38,7 +41,7 @@ export const AlertCheckOut = ({ enabledButton }) => {
   return (
     <>
       <button disabled={!enabledButton} onClick={notify}>
-        Đặt Hàng
+      {t('homepage.payment')}
       </button>
     </>
   );

@@ -9,8 +9,9 @@ export const pages = async (currentPage) => {
         page: currentPage,
       },
     });
-    return res.products;
+    return res.data.products;
   } catch (error) {
     console.log(error);
+    return error;
   }
 };

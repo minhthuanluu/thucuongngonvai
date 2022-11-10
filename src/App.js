@@ -8,10 +8,7 @@ import * as pagesServices from "./api-service/pagesServices";
 function App() {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
-  const [cartItems, setCartItems] = useState(() => {
-    const newItems = JSON.parse(localStorage.getItem("cart"));
-    return newItems ?? [];
-  });
+  const [cartItems, setCartItems] = useState([]);
 
   // Tăng số lượng Item
   const handleAdd = (product_id) => {
@@ -59,7 +56,7 @@ function App() {
     // Get API
     const fetchAPI = async () => {
       const result = await pagesServices.pages(cartItems);
-      setItems(result);
+      setItems(result?.data);
       setLoading(false);
     };
 

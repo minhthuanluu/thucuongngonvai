@@ -5,13 +5,19 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+import i18n from './Language/translation/i18n';
+import { I18nextProvider } from 'react-i18next';
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
-  // <React.StrictMode>
-  <Router>
-    <App />
-  </Router>
-  // </React.StrictMode>
+  <React.StrictMode>
+    <I18nextProvider i18n={i18n}>
+      <Router>
+        <App />
+      </Router>
+    </I18nextProvider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

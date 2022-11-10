@@ -187,7 +187,6 @@ body::-webkit-scrollbar {
   border-top: 1px solid #f1f1f1;
   position: relative;
   overflow: hidden;
-  cursor: pointer;
 }
 
 .product-card .tags {

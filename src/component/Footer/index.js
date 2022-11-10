@@ -8,6 +8,7 @@ import Cart from "../Cart";
 import HistoryCart from "../HistoryCart";
 import classnames from "classnames/bind";
 import style from "./Footer.module.scss";
+import { useTranslation } from 'react-i18next';
 
 const cx = classnames.bind(style);
 
@@ -18,6 +19,7 @@ function Footer({
   handleDeleted,
   handleClear,
 }) {
+  const { t } = useTranslation()
   const [showCart, setShowCart] = useState(false);
   const [showHistoryCart, setShowHistoryCart] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -38,7 +40,7 @@ function Footer({
   return (
     <>
       <footer>
-        <Tippy content="Thanh Công Cụ" animation="scale-extreme" delay={(0, 0)}>
+        <Tippy content={t('homepage.toolBarToolTips')} animation="scale-extreme" delay={(0, 0)}>
           <a
             onClick={() => handleShowMenu()}
             className={cx("btn-delivery", showMenu ? "active" : "")}
@@ -53,7 +55,7 @@ function Footer({
         </Tippy>
 
         {/* Giỏ hàng */}
-        <Tippy content="Giỏ Hàng" animation="scale-extreme" delay={(0, 0)}>
+        <Tippy content={t('homepage.cartToolTips')} animation="scale-extreme" delay={(0, 0)}>
           <a
             onClick={() => handleCart()}
             className={cx(
@@ -90,7 +92,7 @@ function Footer({
 
         {/* Lịch sử đơn hàng */}
         <Tippy
-          content="Lịch Sử Đơn Hàng"
+          content={t('homepage.orderHistoryToolTips')}
           animation="scale-extreme"
           delay={(0, 0)}
         >

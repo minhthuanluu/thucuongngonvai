@@ -9,6 +9,8 @@ const images = {
   imghistory: require("../../assets/images/img_history.png"),
   delivery: require("../../assets/images/button_delivery.webp"),
   loading: require("../../assets/images/loading.gif"),
+  languageVN: require("../../assets/images/vietnam.svg").default,
+  languageUS: require("../../assets/images/united-kingdom.svg").default,
   //   noImage: require("../Images/no-image.png"),
 };
 

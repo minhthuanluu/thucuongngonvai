@@ -3,7 +3,9 @@ import Slider from "react-slick";
 import images from "../../../assets/images";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useTranslation } from 'react-i18next';
 export default function SimpleSlider() {
+  const { t } = useTranslation()
   var settings = {
     dots: false,
     arrows: true,
@@ -20,11 +22,10 @@ export default function SimpleSlider() {
         <img src={images.banner1} className="d-block w-100" alt="..." />
         <div className="carousel-content">
           <a href="#A" className="order-now">
-            {" "}
-            Đặt hàng ngay{" "}
+            {t('homepage.orderNow')}
           </a>
           <div className="scroll-icon"></div>
-          <div className="btn-scroll">Cuộn xuống</div>
+          <div className="btn-scroll">{t('homepage.scrollDown')}</div>
         </div>
       </div>
       <div className="slide item">
@@ -32,11 +33,10 @@ export default function SimpleSlider() {
         <img src={images.banner2} className="d-block w-100" alt="..." />
         <div className="carousel-content">
           <a href="#A" className="order-now">
-            {" "}
-            Đặt hàng ngay{" "}
+          {t('homepage.orderNow')}
           </a>
           <div className="scroll-icon"></div>
-          <div className="btn-scroll">Cuộn xuống</div>
+          <div className="btn-scroll">{t('homepage.scrollDown')}</div>
         </div>
       </div>
       <div className="slide item">
@@ -44,11 +44,10 @@ export default function SimpleSlider() {
         <img src={images.banner3} className="d-block w-100" alt="..." />
         <div className="carousel-content">
           <a href="#A" className="order-now">
-            {" "}
-            Đặt hàng ngay{" "}
+          {t('homepage.orderNow')}
           </a>
           <div className="scroll-icon"></div>
-          <div className="btn-scroll">Cuộn xuống</div>
+          <div className="btn-scroll">{t('homepage.scrollDown')}</div>
         </div>
       </div>
     </Slider>

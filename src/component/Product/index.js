@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./Product.module.scss";
 import images from "../../assets/images";
@@ -9,14 +9,14 @@ import { useTranslation } from 'react-i18next';
 
 import Paginator from "react-hooks-paginator";
 import * as pagesServices from "../../api-service/pagesServices";
-import * as categoryServices from "../../api-service/categoryServices";
 
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import Tabs from "@mui/material/Tabs";
-import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import CategoryProduct from "./CategoryProduct";
+import axios from "axios";
 
 const cx = classNames.bind(styles);
 
@@ -29,8 +29,6 @@ function Product({ loading, items, handleAdd }) {
   const [filterSearchProduct, setFilterSearchProduct] = useState(sortItem);
 
   const [offset, setOffset] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-
 
   // Xử lý tìm kiếm sản phẩm
   const handleSearchProducts = (e) => {
@@ -51,26 +49,109 @@ function Product({ loading, items, handleAdd }) {
     descending: { method: (a, b) => b.price - a.price }, // Chọn giá giảm dần
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
   const [categoryID, setCategoryID] = useState(1)
+
+  const arrData = [
+    { id: 1, store_id: 1, crawl_id: 681, name: 'Hoa Tuyết Berry Berry', description: '' }
+    ,
+    { id: 2, store_id: 1, crawl_id: 682, name: 'Trà sữa Berry Berry', description: '' }
+    ,
+    { id: 3, store_id: 1, crawl_id: 661, name: 'Caramen chảy', description: '' }
+    ,
+    { id: 4, store_id: 1, crawl_id: 660, name: 'Cappuchino - Vietnamo', description: '' }
+    ,
+    { id: 5, store_id: 1, crawl_id: 659, name: 'Latte Latte', description: '' }
+    ,
+    { id: 6, store_id: 1, crawl_id: 658, name: 'Ngọc Viễn Đông', description: '' }
+    ,
+    { id: 7, store_id: 1, crawl_id: 632, name: 'Phin Sữa Đá - Năng Lượng', description: '' }
+    ,
+    { id: 8, store_id: 1, crawl_id: 631, name: 'Phin Đen Đá - Đậm Đà', description: '' }
+    ,
+    { id: 9, store_id: 1, crawl_id: 594, name: 'Sữa Chua Phúc Bồn Tử Đác Cam', description: 'Berry Berry Yogurt' }
+    ,
+    { id: 10, store_id: 1, crawl_id: 592, name: 'Sữa Chua Xoài Đác Thơm', description: 'Tropical Yogurt' }
+    ,
+    { id: 11, store_id: 1, crawl_id: 552, name: 'Trà Lài Đác Thơm', description: 'Forest Jasmine Tea' }
+    ,
+    { id: 12, store_id: 1, crawl_id: 551, name: 'Hồng Trà Đác Cam', description: 'Forest Black Tea' }
+    ,
+    { id: 13, store_id: 1, crawl_id: 538, name: 'Trà Nhãn - Sen', description: 'Longan Tea (Lotus)' }
+    ,
+    { id: 14, store_id: 1, crawl_id: 535, name: 'Trà Nhãn - Lài', description: 'Longan Tea (Jasmine)' }
+    ,
+    { id: 15, store_id: 1, crawl_id: 502, name: 'Trà Vải - Lài', description: 'Lychee Tea (Jasmine)' }]
   // Xử lý Phân Trang cho sản phẩm
-  const handleChangePage = async (e, cate_ID, currentPage) => {
-    const result = await pagesServices.pages(e, cate_ID, currentPage);
-    // console.log(newValue);
-    console.log(result?.data);
-    setCategoryID(result?.data);
-    setSortItem(result?.data);
-    setCurrentPage(result.current_page);
+  const handleChangeCateID = async (cate_ID, key, currentPage) => {
+    // const result = await pagesServices.pages(e, cate_ID, currentPage);
+    // console.log(e);
+    // console.log(cate_ID);
+    // console.log("phan trang" + currentPage);
+    // setCategoryID(cate_ID);
+    // setSortItem(result?.data);
+    // console.log('B: ', currentPage);
+    // const result = await axios.get(`https://shop.thomas-dave.store/api?storeId=${cate_ID}&page=${currentPage}`);
+    // if (result) {
+    //   console.log(result);
+    //   // console.log('A: ', currentPage);
+    //   setSortItem(result?.data.data.products.data);
+    //   // setCategoryID(currentPage);
+    //   // setCurrentPage(currentPage);
+    // }
+    // setCurrentPage(1);
+    // if (key !== 'tab') {
+    //   const result = await axios.get(`https://shop.thomas-dave.store/api?storeId=1&page=1`);
+    //   setSortItem(result?.data.data.products.data);
+    // } else if (key === 'tab') {
+    //   const result = await axios.get(`https://shop.thomas-dave.store/api?storeId=${cate_ID}&page=${currentPage}`);
+    //   if (result) {
+    //     console.log("thay doi cate", result?.data.data.products.data);
+    //     // console.log('A: ', currentPage);
+    //     setSortItem(result?.data.data.products.data);
+    //     setCategoryID(cate_ID);
+
+    //   }
+    // }
+    if (key === 'tab') {
+      try {
+        const result = await axios.get(`https://shop.thomas-dave.store/api?storeId=${cate_ID}&page=${currentPage}`);
+        if (result) {
+          // console.log('A: ', currentPage);
+          setSortItem(result?.data.data.products.data);
+          setCategoryID(cate_ID);
+          setCurrentPage(currentPage)
+        }
+      } catch (error) {
+
+      }
+    }
+    // console.log("thay doi cate", cate_ID, " giá trị cua page cateid: ", currentPage);
   };
 
-  // console.log(categoryID);
+  // Xử lý Phân Trang cho sản phẩm
+  const handleChangePage = async (currentPage) => {
+    const result = await axios.get(`https://shop.thomas-dave.store/api?storeId=${categoryID}&page=${currentPage}`);
+    // setSortItem(result?.data.data.products.data);
+    if (result) {
+      setSortItem(result?.data.data.products.data);
+      setCurrentPage(currentPage);
+    }
 
-  // const handleChangeCateId = async (event, newValue) => {
-  //   const result = await categoryServices.category(newValue)
-  //   setCategoryID(result.data);
-  //   console.log(result.data)
-  // };
+    // console.log("giá trị cua cateID: ", categoryID, " giá trị cua page: ", currentPage);
+  };
 
-  useEffect(() => { }, [items]); // Items được gán giá trị khi component Mount
+  useEffect(() => {
+    const init = () => {
+      if (sortItem) {
+
+      } else {
+        handleChangeCateID(null, '', 1);
+      }
+    }
+    init();
+
+  }, [items]); // Items được gán giá trị khi component Mount
 
   return (
     <>
@@ -125,23 +206,26 @@ function Product({ loading, items, handleAdd }) {
           </div>
 
           <Box sx={{ width: '100%', typography: 'body1' }}>
-            <TabContext value={categoryID}>
+            <TabContext value={categoryID?.toString()}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs onChange={handleChangePage}>
+                <Tabs value={categoryID} onChange={(e, newValue) => handleChangeCateID(newValue, 'tab', currentPage)}>
                   <Tab label="Item One" value={1} />
                   <Tab label="Item Two" value={2} />
                   <Tab label="Item Three" value={3} />
                 </Tabs>
               </Box>
-              <TabPanel value={1}>
-                Item One
-              </TabPanel>
-              <TabPanel value={2}>Item Two</TabPanel>
-              <TabPanel value={3}>Item Three</TabPanel>
+              <TabPanel value={"1"}>Item 1</TabPanel>
+              <TabPanel value={"2"}>Item 2</TabPanel>
+              <TabPanel value={"3"}>Item 3</TabPanel>
             </TabContext>
           </Box>
 
-          <div className="list-product">
+          <CategoryProduct currentPage={currentPage} inputSearch={inputSearch} sortMethods={sortMethods} filters={filters} handleAdd={handleAdd} sortItem={sortItem} setOffset={setOffset} handleChangeCateID={handleChangeCateID} handleChangePage={handleChangePage}
+          ></CategoryProduct>
+
+          {/* {console.log(currentPage)} */}
+
+          {/* <div className="list-product">
             {sortItem?.filter((item) =>
               item.name.toLowerCase().includes(inputSearch.toLowerCase())
             )
@@ -155,7 +239,7 @@ function Product({ loading, items, handleAdd }) {
                     <div className="product-title">{item.name}</div>
                     <div className="product-price">
                       <div className="product-origin-price">
-                        {/* {item.price.toLocaleString()}đ */}
+                        {item.price.toLocaleString()}đ
                       </div>
                     </div>
                     <div onClick={() => handleAdd(item)}>
@@ -164,23 +248,25 @@ function Product({ loading, items, handleAdd }) {
                   </div>
                 </div>
               ))}
-          </div>
-          <ToastContainer />
+          </div> */}
 
-          <div className={cx("pagination-pro")}>
+          <ToastContainer />
+          {/* {console.log(sortItem.length)} */}
+          {/* <div className={cx("pagination-pro")}>
             <Paginator
               totalRecords={sortItem.length}
               pageLimit={5}
               pageNeighbours={2}
               setOffset={setOffset}
               currentPage={currentPage}
-              setCurrentPage={handleChangePage}
+              setCurrentPage={handleChangeCateID}
               pagePrevText="..."
               pageNextText="..."
             />
-          </div>
+          </div> */}
         </>
-      )}
+      )
+      }
     </>
   );
 }
